@@ -1,203 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
-<!-- saved from url=(0087)https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html -->
-<html><script type="text/javascript">window["_gaUserPrefs"] = { ioo : function() { return true; } }</script><!--Copyright (c) 1996 Open Market, Inc.                                    --><!--See the file "LICENSE.TERMS" for information on usage and redistribution--><!--of this file, and for a DISCLAIMER OF ALL WARRANTIES.                   --><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-
-<script type="text/javascript" src="https://web.archive.org/static/js/analytics.js"></script>
-<script type="text/javascript">archive_analytics.values.server_name="wwwb-app36.us.archive.org";archive_analytics.values.server_ms=306;</script>
-<link type="text/css" rel="stylesheet" href="./FastCGI Specification_files/banner-styles.css">
-
-
-      <title>
-         FastCGI Specification
-      </title>
-<style type="text/css">
- h5.c2 {text-align: center}
- div.c1 {text-align: center}
-</style>
-   </head>
-   <body><div id="wm-ipp" lang="en" style="display: none;" class="">
-
-<div style="position:fixed;left:0;top:0;width:100%!important">
-<div id="wm-ipp-inside">
-   <table style="width:100%;"><tbody><tr>
-   <td id="wm-logo">
-       <a href="https://web.archive.org/web/" title="Wayback Machine home page"><img src="./FastCGI Specification_files/wayback-toolbar-logo.png" alt="Wayback Machine" width="110" height="39" border="0"></a>
-   </td>
-   <td class="c">
-       <table style="margin:0 auto;"><tbody><tr>
-       <td class="u" colspan="2">
-       <form target="_top" method="get" action="https://web.archive.org/web/form-submit.jsp" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://fastcgi.com/devkit/doc/fcgi-spec.html" style="width:400px;" onfocus="this.focus();this.select();"><input type="hidden" name="type" value="replay"><input type="hidden" name="date" value="20160305010943"><input type="submit" value="Go"><span id="wm_tb_options" style="display:block;"></span></form>
-       </td>
-       <td class="n" rowspan="2">
-           <table><tbody>
-           <!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
-           <tr class="m">
-           	<td class="b" nowrap="nowrap">
-		
-		    <a href="https://web.archive.org/web/20151227064323/http://www.fastcgi.com/devkit/doc/fcgi-spec.html" title="27 déc. 2015">DÉC.</a>
-		
-		</td>
-		<td class="c" id="displayMonthEl" title="You are here: 1:09:43 mars 5, 2016">mars</td>
-		<td class="f" nowrap="nowrap">
-		
-		    <a href="https://web.archive.org/web/20160405111503/http://www.fastcgi.com/devkit/doc/fcgi-spec.html" title="5 avr. 2016"><strong>AVR.</strong></a>
-		
-                </td>
-	    </tr>
-           <!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
-           <tr class="d">
-               <td class="b" nowrap="nowrap">
-               
-                   <a href="https://web.archive.org/web/20160303215806/http://www.fastcgi.com/devkit/doc/fcgi-spec.html" title="21:58:06 mars 3, 2016"><img src="./FastCGI Specification_files/wm_tb_prv_on.png" alt="Previous capture" width="14" height="16" border="0"></a>
-               
-               </td>
-               <td class="c" id="displayDayEl" style="width:34px;font-size:24px;" title="You are here: 1:09:43 mars 5, 2016">5</td>
-	       <td class="f" nowrap="nowrap">
-               
-		   <a href="https://web.archive.org/web/20160310110344/http://www.fastcgi.com/devkit/doc/fcgi-spec.html" title="11:03:44 mars 10, 2016"><img src="./FastCGI Specification_files/wm_tb_nxt_on.png" alt="Next capture" width="14" height="16" border="0"></a>
-	       
-	       </td>
-           </tr>
-           <!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
-           <tr class="y">
-	       <td class="b" nowrap="nowrap">
-               
-                   <a href="https://web.archive.org/web/20150218090120/http://www.fastcgi.com/devkit/doc/fcgi-spec.html" title="18 févr. 2015"><strong>2015</strong></a>
-               
-               </td>
-               <td class="c" id="displayYearEl" title="You are here: 1:09:43 mars 5, 2016">2016</td>
-	       <td class="f" nowrap="nowrap">
-               
-                   2017
-               
-	       </td>
-           </tr>
-           </tbody></table>
-       </td>
-       </tr>
-       <tr>
-       <td class="s">
-           <a class="t" href="https://web.archive.org/web/20160305010943*/http://fastcgi.com/devkit/doc/fcgi-spec.html" title="See a list of every capture for this URL">207 captures</a>
-           <div class="r" title="Timespan for captures of this URL">10 janv. 01 - 5 avr. 16</div>
-       </td>
-       <td class="k">
-       <a href="https://web.archive.org/web/20140901000000/http://fastcgi.com/devkit/doc/fcgi-spec.html" id="wm-graph-anchor">
-       <div id="wm-ipp-sparkline" title="Explore captures for this URL">
-	 <img id="sparklineImgId" alt="sparklines" onmouseover="__wm.st(1)" onmouseout="__wm.st(0)" onmousemove="__wm.mv(event,this)" width="525" height="27" border="0" src="./FastCGI Specification_files/graph.jsp">
-       <div class="yt" style="display: none; width: 25px; height: 27px; left: 450px;"></div><div class="mt" style="display: none; width: 2px; height: 27px; left: 467px;"></div></div>
-       </a>
-       </td>
-       </tr></tbody></table>
-   </td>
-   <td class="r">
-       <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#close" onclick="__wm.h();return false;" style="background-image:url(/static/images/toolbar/wm_tb_close.png);top:5px;" title="Close the toolbar">Close</a>
-       <a href="http://faq.web.archive.org/" style="background-image:url(/static/images/toolbar/wm_tb_help.png);bottom:5px;" title="Get some help using the Wayback Machine">Help</a>
-   </td>
-   </tr></tbody></table>
-</div>
-</div>
-</div>
-
-
-<!-- BEGIN WAYBACK TOOLBAR INSERT -->
-<script type="text/javascript" src="./FastCGI Specification_files/disclaim-element.js"></script>
-<script type="text/javascript" src="./FastCGI Specification_files/graph-calc.js"></script>
-<script type="text/javascript">//<![CDATA[
-var __wm = (function(imgWidth,imgHeight,yearImgWidth,monthImgWidth){
-var wbPrefix = "/web/";
-var wbCurrentUrl = "http://fastcgi.com/devkit/doc/fcgi-spec.html";
-
-var firstYear = 1996;
-var displayDay = "5";
-var displayMonth = "mars";
-var displayYear = "2016";
-var prettyMonths = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-var $D=document,$=function(n){return document.getElementById(n)};
-var trackerVal,curYear = -1,curMonth = -1;
-var yearTracker,monthTracker;
-function showTrackers(val) {
-  if (val===trackerVal) return;
-  var $ipp=$("wm-ipp");
-  var $y=$("displayYearEl"),$m=$("displayMonthEl"),$d=$("displayDayEl");
-  if (val) {
-    $ipp.className="hi";
-  } else {
-    $ipp.className="";
-    $y.innerHTML=displayYear;$m.innerHTML=displayMonth;$d.innerHTML=displayDay;
-  }
-  yearTracker.style.display=val?"inline":"none";
-  monthTracker.style.display=val?"inline":"none";
-  trackerVal = val;
-}
-function trackMouseMove(event,element) {
-  var eventX = getEventX(event);
-  var elementX = getElementX(element);
-  var xOff = Math.min(Math.max(0, eventX - elementX),imgWidth);
-  var monthOff = xOff % yearImgWidth;
-
-  var year = Math.floor(xOff / yearImgWidth);
-  var monthOfYear = Math.min(11,Math.floor(monthOff / monthImgWidth));
-  // 1 extra border pixel at the left edge of the year:
-  var month = (year * 12) + monthOfYear;
-  var day = monthOff % 2==1?15:1;
-  var dateString = zeroPad(year + firstYear) + zeroPad(monthOfYear+1,2) +
-    zeroPad(day,2) + "000000";
-
-  $("displayYearEl").innerHTML=year+firstYear;
-  $("displayMonthEl").innerHTML=prettyMonths[monthOfYear];
-  // looks too jarring when it changes..
-  //$("displayDayEl").innerHTML=zeroPad(day,2);
-  var url = wbPrefix + dateString + '/' +  wbCurrentUrl;
-  $("wm-graph-anchor").href=url;
-
-  if(curYear != year) {
-    var yrOff = year * yearImgWidth;
-    yearTracker.style.left = yrOff + "px";
-    curYear = year;
-  }
-  if(curMonth != month) {
-    var mtOff = year + (month * monthImgWidth) + 1;
-    monthTracker.style.left = mtOff + "px";
-    curMonth = month;
-  }
-}
-function hideToolbar() {
-  $("wm-ipp").style.display="none";
-}
-function bootstrap() {
-  var $spk=$("wm-ipp-sparkline");
-  yearTracker=$D.createElement('div');
-  yearTracker.className='yt';
-  with(yearTracker.style){
-    display='none';width=yearImgWidth+"px";height=imgHeight+"px";
-  }
-  monthTracker=$D.createElement('div');
-  monthTracker.className='mt';
-  with(monthTracker.style){
-    display='none';width=monthImgWidth+"px";height=imgHeight+"px";
-  }
-  $spk.appendChild(yearTracker);
-  $spk.appendChild(monthTracker);
-
-  var $ipp=$("wm-ipp");
-  $ipp&&disclaimElement($ipp);
-}
-return{st:showTrackers,mv:trackMouseMove,h:hideToolbar,bt:bootstrap};
-})(525, 27, 25, 2);//]]>
-</script>
-<style type="text/css">
-body {
-  margin-top:0 !important;
-  padding-top:0 !important;
-  min-width:800px !important;
-}
-</style>
-
-<script type="text/javascript">__wm.bt();</script>
-<!-- END WAYBACK TOOLBAR INSERT -->
-
-      <div class="c1">
+<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FastCGI Specification</title>
+</head>
+<body>
          <h2>
             FastCGI Specification
          </h2>
@@ -214,115 +20,115 @@ body {
       </p>
       <h5 class="c2">
          Copyright © 1996 Open Market, Inc. 245 First Street, Cambridge, MA 02142 U.S.A.<br>
-         Tel: 617-621-9500 Fax: 617-621-1703 URL: <a href="https://web.archive.org/web/20160305010943/http://www.openmarket.com/">http://www.openmarket.com/</a><br>
+         Tel: 617-621-9500 Fax: 617-621-1703 URL: <a href="http://www.openmarket.com/">http://www.openmarket.com/</a><br>
          <br>
          $Id: fcgi-spec.html,v 1.4 2002/02/25 00:42:59 robs Exp $
       </h5>
       <hr>
       <ul type="square">
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S1">1. Introduction</a>
+            <a href="#S1">1. Introduction</a>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S2">2. Initial Process State</a> 
+            <a href="#S2">2. Initial Process State</a> 
             <ul type="square">
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S2.1">2.1 Argument list</a>
+                  <a href="#S2.1">2.1 Argument list</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S2.2">2.2 File descriptors</a>
+                  <a href="#S2.2">2.2 File descriptors</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S2.3">2.3 Environment variables</a>
+                  <a href="#S2.3">2.3 Environment variables</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S2.4">2.4 Other state</a>
+                  <a href="#S2.4">2.4 Other state</a>
                </li>
             </ul>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S3">3. Protocol Basics</a> 
+            <a href="#S3">3. Protocol Basics</a> 
             <ul type="square">
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S3.1">3.1 Notation</a>
+                  <a href="#S3.1">3.1 Notation</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S3.2">3.2 Accepting Transport Connections</a>
+                  <a href="#S3.2">3.2 Accepting Transport Connections</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S3.3">3.3 Records</a>
+                  <a href="#S3.3">3.3 Records</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S3.4">3.4 Name-Value Pairs</a>
+                  <a href="#S3.4">3.4 Name-Value Pairs</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S3.5">3.5 Closing Transport Connections</a>
+                  <a href="#S3.5">3.5 Closing Transport Connections</a>
                </li>
             </ul>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S4">4. Management Record Types</a> 
+            <a href="#S4">4. Management Record Types</a> 
             <ul type="square">
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S4.1">4.1 <tt>FCGI_GET_VALUES, FCGI_GET_VALUES_RESULT</tt></a>
+                  <a href="#S4.1">4.1 <tt>FCGI_GET_VALUES, FCGI_GET_VALUES_RESULT</tt></a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S4.2">4.2 <tt>FCGI_UNKNOWN_TYPE</tt></a>
+                  <a href="#S4.2">4.2 <tt>FCGI_UNKNOWN_TYPE</tt></a>
                </li>
             </ul>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S5">5. Application Record Types</a> 
+            <a href="#S5">5. Application Record Types</a> 
             <ul type="square">
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S5.1">5.1 <tt>FCGI_BEGIN_REQUEST</tt></a>
+                  <a href="#S5.1">5.1 <tt>FCGI_BEGIN_REQUEST</tt></a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S5.2">5.2 Name-Value Pair Streams: <tt>FCGI_PARAMS</tt>, <tt>FCGI_RESULTS</tt></a>
+                  <a href="#S5.2">5.2 Name-Value Pair Streams: <tt>FCGI_PARAMS</tt>, <tt>FCGI_RESULTS</tt></a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S5.3">5.3 Byte Streams: <tt>FCGI_STDIN</tt>, <tt>FCGI_DATA</tt>, <tt>FCGI_STDOUT</tt>,
+                  <a href="#S5.3">5.3 Byte Streams: <tt>FCGI_STDIN</tt>, <tt>FCGI_DATA</tt>, <tt>FCGI_STDOUT</tt>,
                   <tt>FCGI_STDERR</tt></a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S5.4">5.4 <tt>FCGI_ABORT_REQUEST</tt></a>
+                  <a href="#S5.4">5.4 <tt>FCGI_ABORT_REQUEST</tt></a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S5.5">5.5 <tt>FCGI_END_REQUEST</tt></a>
+                  <a href="#S5.5">5.5 <tt>FCGI_END_REQUEST</tt></a>
                </li>
             </ul>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S6">6. Roles</a> 
+            <a href="#S6">6. Roles</a> 
             <ul type="square">
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S6.1">6.1 Role Protocols</a>
+                  <a href="#S6.1">6.1 Role Protocols</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S6.2">6.2 Responder</a>
+                  <a href="#S6.2">6.2 Responder</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S6.3">6.3 Authorizer</a>
+                  <a href="#S6.3">6.3 Authorizer</a>
                </li>
                <li>
-                  <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S6.4">6.4 Filter</a>
+                  <a href="#S6.4">6.4 Filter</a>
                </li>
             </ul>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S7">7. Errors</a>
+            <a href="#S7">7. Errors</a>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S8">8. Types and Constants</a>
+            <a href="#S8">8. Types and Constants</a>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S9">9. References</a>
+            <a href="#S9">9. References</a>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#SA">A. Table: Properties of the record types</a>
+            <a href="#SA">A. Table: Properties of the record types</a>
          </li>
          <li>
-            <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#SB">B. Typical Protocol Message Flow</a>
+            <a href="#SB">B. Typical Protocol Message Flow</a>
          </li>
       </ul>
       <p>
@@ -869,7 +675,7 @@ body {
          </li>
       </ul>
       <p>
-         Roles are described in more detail in <a href="https://web.archive.org/web/20160305010943/http://fastcgi.com/devkit/doc/fcgi-spec.html#S6">Section 6</a> below.
+         Roles are described in more detail in <a href="#S6">Section 6</a> below.
       </p>
       <p>
          The <tt>flags</tt> component contains a bit that controls connection shutdown:
@@ -1356,13 +1162,10 @@ typedef struct {
       <h3>
          <a name="S9">9. References</a>
       </h3>
+  
       <p>
-         National Center for Supercomputer Applications, <a href="https://web.archive.org/web/20160305010943/http://hoohoo.ncsa.uiuc.edu/cgi/">The Common Gateway
-         Interface</a>, version CGI/1.1.
-      </p>
-      <p>
-         D.R.T. Robinson, <a href="https://web.archive.org/web/20160305010943/http://cgi-spec.golux.com/">The WWW
-         Common Gateway Interface Version 1.1</a>, Internet-Draft, 15 February 1996.
+         <a href="https://www.w3.org/CGI/">The WWW
+         Common Gateway Interface at W3C </a>
       </p>
       <p>
       </p>
@@ -1505,20 +1308,5 @@ typedef struct {
       <address>
          © 1995, 1996 Open Market, Inc. / mbrown@openmarket.com
       </address>
-   
 
-
-
-
-
-
-
-<!--
-     FILE ARCHIVED ON 1:09:43 mars 5, 2016 AND RETRIEVED FROM THE
-     INTERNET ARCHIVE ON 14:25:16 avr. 10, 2016.
-     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
-
-     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
-     SECTION 108(a)(3)).
--->
 </body></html>
