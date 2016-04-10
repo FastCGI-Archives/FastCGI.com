@@ -1,31 +1,40 @@
 # FastCGI.com files backups
 
-##FastCGI Licence
+##[FastCGI Licence](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/Licence%20_%20FastCGI%20-.html)
 
-##New FAQ
+##[New FAQ](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/FAQ%20(Newer)%20_%20FastCGI%20-.html)
 
-##FAQ
+##[FAQ](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/FastCGI%20FAQ.html)
 Frequently asked questions, examples and explanations.
 
-##FastCGI White Paper
+##[FastCGI White Paper](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/FastCGI_%20A%20High-Performance%20Web%20Server%20Interface%20_%20FastCGI%20-.html)
 Describes the motivation for FastCGI, the FastCGI interface, FastCGI application roles, the FastCGI application library, and FastCGI performance.
 
-##Understanding FastCGI Application Performance
+##[Understanding FastCGI Application Performance](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/Understanding%20FastCGI%20Application%20Performance%20_%20FastCGI%20-.html)
 Why FastCGI applications often run faster than applications coded directly to Web server APIs.
-FastCGI Developer' Kit
+
+##[FastCGI Developer' Kit](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/Application%20Libraries%20_%20Development%20Kits%20_%20FastCGI%20-.html)
 How to configure and build the kit, and write applications using the FastCGI application libraries.
 
-##FastCGI Programmer' Guide
+##[FastCGI Programmer' Guide](https://github.com/FastCGI-Backups/fcgi2/blob/master/doc/fastcgi-prog-guide/cover.htm)
 Programmer-oriented documentation for developers of FastCGI applications. The content overlaps considerably with the Developer's Kit document.
 
 ##[FastCGI Specification](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/FastCGI.com/blob/master/FastCGI%20Specification.html)
 Defines the interface between a FastCGI application and the Web server.
 
-##FastCGI - A High-Performance Gateway Interface
+##[FastCGI - A High-Performance Gateway Interface](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/FastCGI_%20A%20High-Performance%20Web%20Server%20Interface%20_%20FastCGI%20-.html)
 Position paper presented at the workshop "Programming the Web -- a search for APIs", Fifth International World Wide Web Conference, 6 May 1996, Paris, France.
 
 ##Rob's Open Source '99 Presentations
 Two FastCGI related presentations given at O'reilly's Open Source '99 Conference in Monterey, CA.
 
-##The Apache FastCGI Process Manager
+###From the Perl Conference (Applying Perl track):
+
+Scaling CGI with Perl   PDF   PowerPoint
+
+###From the Apache Conference:
+
+The Apache FastCGI Implementation   PDF   PowerPoint
+
+##[The Apache FastCGI Process Manager](https://github.com/FastCGI-Backups/FastCGI.com/blob/master/The%20Apache%20FastCGI%20Process%20Manager%20_%20FastCGI%20-.html)
 A description of some of the functionality of the process manager in mod_fastcgi. I'm not sure how accurate it is.
