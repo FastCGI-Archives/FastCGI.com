@@ -28,13 +28,13 @@ Position paper presented at the workshop "Programming the Web -- a search for AP
 ##Rob's Open Source '99 Presentations
 Two FastCGI related presentations given at O'reilly's Open Source '99 Conference in Monterey, CA.
 
-###From the Perl Conference (Applying Perl track):
+**From the Perl Conference (Applying Perl track):**
 
-Scaling CGI with Perl   PDF   PowerPoint
+Scaling CGI with Perl   [PDF](https://github.com/FastCGI-Backups/FastCGI.com/raw/master/FastCGI-Perl.pdf)   [PowerPoint](https://github.com/FastCGI-Backups/FastCGI.com/raw/master/FastCGI-Perl.ppt)
 
-###From the Apache Conference:
+**From the Apache Conference:**
 
-The Apache FastCGI Implementation   PDF   PowerPoint
+The Apache FastCGI Implementation   [PDF](https://github.com/FastCGI-Backups/FastCGI.com/raw/master/FastCGI.pdf)   [PowerPoint](https://github.com/FastCGI-Backups/FastCGI.com/raw/master/FastCGI.ppt)
 
 ##[The Apache FastCGI Process Manager](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/FastCGI.com/blob/master/The%20Apache%20FastCGI%20Process%20Manager%20_%20FastCGI%20-.html)
 A description of some of the functionality of the process manager in mod_fastcgi. I'm not sure how accurate it is.
