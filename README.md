@@ -13,7 +13,7 @@ Describes the motivation for FastCGI, the FastCGI interface, FastCGI application
 ##[Understanding FastCGI Application Performance](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/FastCGI.com/blob/master/Understanding%20FastCGI%20Application%20Performance%20_%20FastCGI%20-.html)
 Why FastCGI applications often run faster than applications coded directly to Web server APIs.
 
-##[FastCGI Developer' Kit](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/FastCGI.com/blob/master/Application%20Libraries%20_%20Development%20Kits%20_%20FastCGI%20-.html)
+##[FastCGI Developer' Kit](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/FastCGI.com/blob/master/FastCGI%20Developer's%20Kit%20_%20FastCGI%20-.html)
 How to configure and build the kit, and write applications using the FastCGI application libraries.
 
 ##[FastCGI Programmer' Guide](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/fcgi2/blob/master/doc/fastcgi-prog-guide/cover.htm)
@@ -38,3 +38,6 @@ The Apache FastCGI Implementation   PDF   PowerPoint
 
 ##[The Apache FastCGI Process Manager](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/FastCGI.com/blob/master/The%20Apache%20FastCGI%20Process%20Manager%20_%20FastCGI%20-.html)
 A description of some of the functionality of the process manager in mod_fastcgi. I'm not sure how accurate it is.
+
+##[API/Libraries](https://htmlpreview.github.io/?https://github.com/FastCGI-Backups/FastCGI.com/blob/master/Application%20Libraries%20_%20Development%20Kits%20_%20FastCGI%20-.html)
+The FastCGI application libraries.
