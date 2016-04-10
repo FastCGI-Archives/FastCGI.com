@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>FAQ (Newer) | FastCGI - </title>
+</head>
+<body>
+<!--Copyright (c) 1996 Open Market, Inc.                                    -->
+<!--See the file "LICENSE.TERMS" for information on usage and redistribution-->
+<!--of this file, and for a DISCLAIMER OF ALL WARRANTIES.                   -->
+<ul>
+<li><a href="#incomplete_headers">FastCGI: incomplete headers (d bytes) received from server "s"</a></li>
+<li><a href="#windows_dll">Why is Windows reporting that it is unable to locate a DLL?</a></li>
+<li><a href="#fork">How do I use fork or exec?</a></li>
+<li><a href="#signals">How should I handle signals?</a></li>
+</ul>
+
+<hr>
+
+<ul>
+<li><a name="incomplete_headers">FastCGI: incomplete headers (d bytes) received from server "s"</a><br>
+<p>The FastCGI application, s, did not terminate the headers properly. A total of d bytes were recieved.</p>
+
+<p>Headers are terminated by an empty line, e.g.</p>
+<pre>    printf("Content-type: text/html\r\nStatus: 200 OK\r\n\r\n");
+</pre>
+<p>
+See the <a href="https://www.w3.org/CGI/">CGI specification</a> for more
+information.
+</p>
+</li>
+
+&lt;!-- ==== Separator for us humans ==== --&gt;
+
+<li><a name="windows_dll">Why is Windows reporting that it is unable to locate a DLL?</a><br>
+<p>Windows first searches the set of pre-installed DLLs such as the performance library (KERNEL32.DLL) and the security library (USER32.DLL). It then searches for the DLLs in the following sequence:
+
+</p><ol>
+<li>The directory where the executable module for the current process is located.</li>
+<li>The current directory.</li>
+<li>The Windows system directory. The GetSystemDirectory function retrieves the path of this directory.</li>
+<li>The Windows directory. The GetWindowsDirectory function retrieves the path of this directory.</li>
+<li>The directories listed in the PATH environment variable.</li>
+</ol>
+
+<p></p><p>Note that the LIBPATH environment variable is not used.</p>
+
+<p>mod_fastcgi, by default, clears the environment of FastCGI applications it starts (with the exception of SystemRoot). To pass or set an environment variable to a FastCGI application use the -initial-env argument to FastCgiConfig or FastCgiServer. </p>
+</li>
+
+&lt;!-- ==== Separator for us humans ==== --&gt;
+
+<li><a name="fork">How do I use fork or exec?</a>
+
+<p>When a request handle object is destroyed that has accepted a connection without finishing it, the connection will automatically be finished. Usually, this is what you want, although it is preferable to explicitly call the Finish() method.</p>
+
+<p>When you fork, however, without calling exec as well, i.e. when you have two instance of perl running, the request handle object will (eventually) be destroyed in both instances of perl. As a result, a possible request being handled will be finished when the object is destroyed for the first time. This is probably not what you expect, since you will usually only be handling the request in either the parent or the child. To inhibit this unwanted request finishing, you can send the Detach() message to the request handle object. In a detached state, destruction will not lead to any finishing of requests. It is advised you call Detach() before forking and Attach afterwards (in the process that will continue handling the request).</p>
+
+<p>Before doing this though, please think about whether or not you really need to fork inside the accept loop. Since the FastCGI paradigm is different from the normal CGI one, you'll find that there are situations where you would fork in a CGI context, whereas it may not be necessary in a FastCGI context. In other cases, you're better off doing the forking before the accept loop.</p>
+
+<p>Conversely, when you call exec without forking, the object will not be destroyed and no connection will automatically be finished, so in that case you are forced to do it yourself.</p>
+
+<pre>#!/usr/bin/perl
+use strict;
+use warnings;
+
+use FCGI;
+
+my $request = FCGI::Request();
+
+while ($request-&gt;Accept() &gt;= 0) {
+    # do stuff with $request
+
+    $request-&gt;Detach();
+
+    my $child;
+    $child = fork;
+    if (!defined $child) {
+        # error handling
+    } elsif ($child == 0) {
+        # do child stuff
+    }
+    $request-&gt;Attach();
+
+    # continue processing request
+
+    $request-&gt;Finish();
+}
+</pre>
+
+&lt;!-- ==== Separator for us humans ==== --&gt;
+
+</li><li><a name="signals">How should I handle signals?</a>
+
+<p>All FastCGI applications should handle PIPE and TERM , mod_fastcgi spawned applications should also handle USR1.</p>
+
+<p>PIPE occurs when trying to write/print to a file descriptor that has been closed.  Under mod_fastcgi, if a client aborts a connection before it completes mod_fastcgi does too.  At a minimum, SIGPIPE should be ignored (this is already setup in applications spawned by mod_fastcgi).  Ideally, it should result in an early abort of the request handling within your application and a return to the top of the FastCGI accept() loop.</p>
+
+<p>USR1 may be received by FastCGI applications spawned by mod_fastcgi.  Apache uses this signal to request a "graceful" process shutdown (e.g. its used by "apachectl restart").  When mod_fastcgi's Process Manager receives USR1 it sends TERM to all of the FastCGI applications it spawned and then exits (its gets restarted by Apache).  This means that, under Apache/mod_fastcgi, a FastCGI application that receives USR1 from Apache will also receive TERM from the process manager.  FastCGI applications expected to be run under the control of mod_fastcgi/Apache should handle USR1 by finishing any request in process and then shutting down.</p>
+
+<p>TERM is the standard signal sent to applications to request shutdown.  Typically, this is considered a request for "clean" shutdown, i.e. finish anything your in the middle of (within reason), free resources such as database connections, and exit.  When Apache receives TERM, it does not finish handling requests in progress.  Whether or not you finish any request in process when TERM is received is your decision, but keep in mind that under mod_fastcgi/Apache the TERM may be a "graceful" request in disguise.  I always finish any request in process before exiting.</p>
+
+<p>Handling signals can be tricky.  Consult the documentation for your language and system for restrictions and idiosyncrasies.  In general, its always best to do as little as possible from within a signal handler.</p>
+</li>
+
+&lt;!-- ==== Separator for us humans ==== --&gt;
+&lt;!-- ==== Separator for us humans ==== --&gt;
+&lt;!-- ==== Separator for us humans ==== --&gt;
+&lt;!-- ==== Separator for us humans ==== --&gt;
+
+</ul>
+
+
+</body></html>
