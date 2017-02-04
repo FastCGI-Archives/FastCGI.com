@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+<title>Apache Install | FastCGI - </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="heading">
+		Apache Install	</div> <!-- end heading -->
+	<div id="content">
+												<div id="node-9" class="node">
+
+
+
+  
+  <div class="content">
+    <ul>
+<li>Install instructions</li>
+<li>Problems</li>
+<ul>
+<li><A HREF="#ap_os_is_path_absolute">Cannot load /usr/lib/apache/1.3/mod_fastcgi.so into server: /usr/lib/apache/1.3/mod_fastcgi.so: undefined symbol: ap_os_is_path_absolute</a></li>
+</ul>
+</ul>
+
+<hr />
+
+<ul>
+<li>Install instructions</li>
+<li>Problems</li>
+<ul>
+<li><A NAME="ap_os_is_path_absolute">Cannot load /usr/lib/apache/1.3/mod_fastcgi.so into server:
+/usr/lib/apache/1.3/mod_fastcgi.so: undefined symbol: ap_os_is_path_absolute</a>
+<P>
+This is the result of a bug in the Apache header files (reported Sep 1999, PR# 5012, but never fixed).
+</p>
+<P>
+The problem is due to the fact that httpd was compiled with optimization and ap_os_is_path_absolute() was
+inlined, but when mod_fastcgi.so was compiled optimization was not enabled and ap_os_is_path_absolute() was
+expected to be an external symbol.
+</p>
+
+<P>
+Try this apxs invocation instead (it will turn on optimization and inline ap_os_is_path_apsolute()):
+</p>
+<pre>
+apxs -Wc,-O -o mod_fastcgi.so -c *.c
+</pre>
+</li>
+
+
+</ul>
+</ul>
+  </div>
+
+</body>
+</html>
