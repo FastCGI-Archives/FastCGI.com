@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+<title>Apache FAQ | FastCGI - </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="heading">Apache FAQ	</div> <!-- end heading -->
+	<div id="content">
+    <div id="node-17" class="node">
+  <div class="content">
+    <p>Apache 1.3.X</p>
+<ul>
+<li><a href="#WrongSuexecWrapper">Why does <b>FastCgiSuexec On</b> use the wrong suexec wrapper?</a></li>
+<li><a href="#NoRestart">How can I tell mod_fastcgi not to restart my application?</a></li>
+<li><a href="#typical_httpd.conf">What does a typical httpd.conf look like?</a></li>
+<li><a href="#FastCGIExternalServer">What is the path used with FastCGIExternalServer?</a></li>
+</ul>
+<hr />
+<ul>
+<li><a name="WrongSuexecWrapper">Why does <b>FastCgiSuexec On</b> use the wrong suexec wrapper?</a><br />
+If you have built mod_fastcgi as a DSO with apxs (see the INSTALL document) there is no way for mod_fastcgi
+to know where your suexec wrapper lives. You will have to use the <I>path</i> argument to FastCgiSuexec.
+</li>
+
+<li><A NAME="NoRestart">How can I tell mod_fastcgi not to restart my application?</a>
+<p>
+mod_fastcgi always maintains the configured number of processes for statically configured applications (see
+the -processes argument to FastCgiServer).
+</p>
+<p>
+Dynamically configured applications are allowed to die (crash, exit, or be signaled down) as long as the
+-restart argument to FastCgiConfig is not in effect.
+</p>
+
+<p>
+By default, mod_fastcgi will restart the <I>last</i> process instance of a dynamic application if it
+dies.  This behavior can be changed with the -singleThreshold argument to FastCgiConfig.  Note that
+changing this can aggravate a bug in some OS when non-blocking connect()s are being used (see the
+-appConnTimeout argument).  Changing -singleThreshold will allow mod_fastcgi to kill off (signal down)
+the last process instance of an application when the demand for it no longer warrants its presence. This is
+the only way the <I>last</i> process instance of an application is allowed to die without being restarted
+(i.e. a crash or exit will always result in a restart).
+</p>
+
+<p>
+An another alternative is to configure the application as an FastCgiExternalServer and start and manage the
+application processes on your own (independent of mod_fastcgi's Process Manager).
+</p>
+
+</li><li><A NAME="typical_httpd.conf">What does a typical httpd.conf look like?</a>
+<i>Please</i> consult the mod_fastcgi documentation for details (IOW read it).
+<pre>
+LoadModule fastcgi_module modules/mod_fastcgi.so
+
+&lt;IfModule mod_fastcgi.c&gt;
+    # URIs that begin with /fcgi-bin/, are found in /var/www/fcgi-bin/
+    Alias /fcgi-bin/ /var/www/fcgi-bin/
+    
+    # Anything in here is handled as a &quot;dynamic&quot; server if not defined as &quot;static&quot; or &quot;external&quot;
+    
+    &lt;Directory /var/www/fcgi-bin/&gt;
+        SetHandler fastcgi-script
+        Options +ExecCGI
+    &lt;/Directory&gt;
+    
+    # Anything with one of these extensions is handled as a &quot;dynamic&quot;  server if not defined as
+    # &quot;static&quot; or &quot;external&quot;. Note: &quot;dynamic&quot; servers require ExecCGI to be on in their directory.
+    AddHandler fastcgi-script .fcgi .fpl
+    
+    # Start a &quot;static&quot; server at httpd initialization inside the scope of the SetHandler
+    FastCgiServer /var/www/fcgi-bin/echo -processes 5
+    
+    # Start a &quot;static&quot; server at httpd initialization inside the scope of the AddHandler
+    
+    FastCgiServer /var/www/htdocs/some/path/echo.fcgi
+    
+    # Start a &quot;static&quot; server at httpd initialization outside the scope of the Set/AddHandler
+    FastCgiServer /var/www/htdocs/some/path/coolapp
+    &lt;Directory /var/www/htdocs/some/path/coolapp&gt;
+        SetHandler fastcgi-script
+    &lt;/Directory&gt;
+&lt;/IfModule&gt;
+</pre>
+</li>
+
+<li><a name="FastCGIExternalServer">What is the path used with FastCGIExternalServer?</a>
+
+<p>Since all FastCGI directives are global (they are not configured in a server context), all FastCGI paths map to the filesystem. In the case of external servers, this path does not have anything to do with the file system; it is a virtual file system path. Since the connection between mod_fastcgi and the FastCGI app is by a socket (unix or tcp), mod_fastcgi does not care where the program is (it could be on a completely different machine). However, mod_fastcgi needs to know when a hit is calling for an external app, so it uses this path as if it were a local file system path. Apache translates a request URI to a filesystem path.</p>
+
+<p>There are two ways for getting external apps working:</p>
+
+<ol>
+
+<li>Use a path that is within the server file system area
+
+<p>Example:</p>
+
+<pre>
+{Some server document root /var/www/htdocs}
+FastCGIExternalServer /var/www/htdocs/extprog -host 127.0.0.1:9000
+</pre>
+
+<p>This seems easiest but has some shortcomings. Firstly there is the combination of real and virtual filesystem locations in the same place. If you are trying to keep all your files well organized and you have source files for the external server in one place and map URIs to the file system into another, there is a less than clear demarcation between what is real and what is virtual. Most importantly, if you want to use the same external server for more than one server, site, or URI, giving it a virtual place within a real path makes all that more confusing.</p>
+</li>
+
+<li> Use a segregated path and use Alias to map requests to it.
+
+<p>Example:</p>
+
+<pre>
+    FastCGIExternalServer /fastcgiext/extprog -host 127.0.0.1:9000
+    
+    {Some server docutment root /var/www/htdocs}
+    Alias /extprog /fastcgiext/extprog
+</pre>
+
+<p>This has the potential for more clarity. As a convention all external servers could be mapped into a virtual hierarchy and then aliases used to map into that from any and all places. This keeps the servers well organized and out of the way from file system locations and Aliases can map into them from where they are needed.</p>
+</li>
+</ol>
+</li>
+</ul>  </div>
+
+  <div class="clear-block clear">
+    <div class="meta">
+    
+    </div>
+
+      </div>
+
+</div>	
+</div> <!-- end content -->
+</div> <!-- end wrapper -->
+
+</body>
+</html>
