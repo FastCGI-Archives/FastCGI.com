@@ -29,8 +29,6 @@ information.
 </p>
 </li>
 
-&lt;!-- ==== Separator for us humans ==== --&gt;
-
 <li><a name="windows_dll">Why is Windows reporting that it is unable to locate a DLL?</a><br>
 <p>Windows first searches the set of pre-installed DLLs such as the performance library (KERNEL32.DLL) and the security library (USER32.DLL). It then searches for the DLLs in the following sequence:
 
@@ -46,8 +44,6 @@ information.
 
 <p>mod_fastcgi, by default, clears the environment of FastCGI applications it starts (with the exception of SystemRoot). To pass or set an environment variable to a FastCGI application use the -initial-env argument to FastCgiConfig or FastCgiServer. </p>
 </li>
-
-&lt;!-- ==== Separator for us humans ==== --&gt;
 
 <li><a name="fork">How do I use fork or exec?</a>
 
@@ -87,8 +83,6 @@ while ($request-&gt;Accept() &gt;= 0) {
 }
 </pre>
 
-&lt;!-- ==== Separator for us humans ==== --&gt;
-
 </li><li><a name="signals">How should I handle signals?</a>
 
 <p>All FastCGI applications should handle PIPE and TERM , mod_fastcgi spawned applications should also handle USR1.</p>
@@ -101,11 +95,6 @@ while ($request-&gt;Accept() &gt;= 0) {
 
 <p>Handling signals can be tricky.  Consult the documentation for your language and system for restrictions and idiosyncrasies.  In general, its always best to do as little as possible from within a signal handler.</p>
 </li>
-
-&lt;!-- ==== Separator for us humans ==== --&gt;
-&lt;!-- ==== Separator for us humans ==== --&gt;
-&lt;!-- ==== Separator for us humans ==== --&gt;
-&lt;!-- ==== Separator for us humans ==== --&gt;
 
 </ul>
 
