@@ -124,7 +124,7 @@ The protocol version field specifies the version of the FastCGI protocol that is
 
 The different FastCGI packet types are:
 
-| | |
+| Packet types | Descriptions |
 |---|---|
 |FCGI_PARAMS|Used for sending name/value pairs (CGI environment variables) from the Web server to the application.|
 |FCGI_STDIN|Used for sending the standard input from the Web server to the application.|
@@ -285,7 +285,7 @@ How fast is FastCGI? The answer depends on the application. This section contain
 
 We measured the relative performance of CGI, FastCGI, and static files on the Open Market WebServer, using a simple application that generates a fixed number of output bytes. The following table shows the measured request processing time for different request types on a typical platform. The times are measured from the client perspective and include client, server, and application processing time.
 
-| | |
+| Types | Processing time per KByte |
 | --- | --- |
 |Static file|21ms + 0.19ms per Kbyte|
 |FastCGI|22ms + 0.28ms per Kbyte|
@@ -295,7 +295,7 @@ FastCGI performance is comparable to serving static files, and significantly bet
 
 Let's use this data to estimate the speedup from migrating a typical database CGI application to FastCGI. Assume the application takes 50ms to initialize the database connection and generates 5K of output data. Request performance can be computed as follows:
 
-| | |
+| Types | Processing time |
 | --- | --- |
 |CGI|59ms + 50ms + (0.37ms)(5) = 111ms|
 |FastCGI|22ms + (0.28ms)(5) = 23ms|
