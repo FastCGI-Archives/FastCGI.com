@@ -29,8 +29,3 @@
     *   [FasTalk](http://www.mod.smalltalk.org/)
     *   [FS FastCGI](http://www.dolphinharbor.org/dh/projects/fs/index.html) for [Dolphin Smalltalk](http://www.object-arts.com/)
 *   Jeff Coffield's VMS [module](http://www.digitalsynergyinc.com/fastcgi.html).
-
-
-
-
-**© Copyright 1996 - 2008 Open Market, Rob Saccoccio & others, All rights reserved. [Web design](http://www.cosmicsitedesign.com/) by CosmicSiteDesign.com**
