@@ -171,7 +171,7 @@ Here are some consequences of this implementation technique:
 #define _STDIO_H
 ```
 
-    The specific symbol used for multiple-include protection, <tt>_STDIO_H</tt> in this example, varies from platform to platform. As long as your platform protects <tt>stdio.h</tt> against multiple includes, you can forget about this issue.
+The specific symbol used for multiple-include protection, `_STDIO_H` in this example, varies from platform to platform. As long as your platform protects `stdio.h` against multiple includes, you can forget about this issue.
 
 *   If your application passes <tt>FILE *</tt> to functions implemented in libraries for which you have source code, then you'll want to recompile these libraries with <tt>fcgi_stdio.h</tt> included. Most C compilers provide a command-line option for including headers in a program being compiled; using such a compiler feature allows you to rebuild your libraries without making source changes. For instance the gcc command line
 
@@ -179,7 +179,7 @@ Here are some consequences of this implementation technique:
 # gcc -include /usr/local/include/fcgi_stdio.h wonderlib.c
 ```
 
-    causes gcc to include <tt>fcgi_stdio.h</tt> before it even begins to read the module <tt>wonderlib.c</tt>.
+causes gcc to include `fcgi_stdio.h` before it even begins to read the module `wonderlib.c`.
 
 *   If your application passes <tt>FILE *</tt> to functions implemented in libraries for which you do not have source code, then you'll need to include the headers for these libraries _before_ you include <tt>fcgi_stdio.h</tt>. You can't pass the <tt>stdin</tt>, <tt>stdout</tt>, or <tt>stderr</tt> streams produced by <tt>FCGI_Accept</tt> to any functions implemented by these libraries. You can pass a stream on a Unix file to a library function by following this pattern:
 
@@ -188,7 +188,7 @@ FILE *myStream = fopen(path, "r");
 answer = MungeStream(FCGI_ToFile(myStream));
 ```
 
-    Here <tt>MungeStream</tt> is a library function that you can't recompile and <tt>FCGI_ToFile</tt> is a macro that converts from <tt>FCGI_FILE *</tt> to <tt>FILE *</tt>. The macro <tt>FCGI_ToFile</tt> is defined in <tt>fcgi_stdio.h</tt>.
+Here <tt>MungeStream</tt> is a library function that you can't recompile and <tt>FCGI_ToFile</tt> is a macro that converts from <tt>FCGI_FILE *</tt> to <tt>FILE *</tt>. The macro <tt>FCGI_ToFile</tt> is defined in <tt>fcgi_stdio.h</tt>.
 
 #### Converting CGI programs
 
