@@ -71,7 +71,7 @@ This application returns a "Hello world" HTML response to the client. It also ke
 
 The application library was designed to make migration of existing CGI programs as simple as possible. Many applications can be converted by adding a loop around the main request processing code and recompiling with the FastCGI application library. To ease migration to FastCGI, executables built with the application library can run as either CGI or FastCGI programs, depending on how they are invoked. The library detects the execution environment and automatically selects FastCGI or regular I/O routines, as appropriate.
 
-Applications written in Perl, Tcl, and other scripting languages can be migrated by using a language interpreter built with the application library. FastCGI-integrated Tcl and Perl interpreters for popular Unix platforms are available from the _www.fastcgi.com_ Web site. The interpreters are backward-compatible: They can run standard Tcl and Perl applications.
+Applications written in Perl, Tcl, and other scripting languages can be migrated by using a language interpreter built with the application library. FastCGI-integrated Tcl and Perl interpreters for popular Unix platforms are available from the [www.fastcgi.com](https://web.archive.org/web/20160305160340/http://www.fastcgi.com/) Web site. The interpreters are backward-compatible: They can run standard Tcl and Perl applications.
 
 ### 3\. Single-threaded and multi-threaded applications
 
