@@ -16,7 +16,7 @@ Open Market, Inc.
 
 FastCGI is a fast, open, and secure Web server interface that solves the performance problems inherent in CGI without introducing any of the new problems associated with writing applications to lower-level Web server APIs. Modules to support FastCGI can be plugged into Web server APIs such as Apache API, NSAPI, and ISAPI. Key considerations in designing FastCGI included minimizing the cost of migrating CGI applications (including applications written in popular scripting languages such as Perl), supporting both single-threaded and multi-threaded application programming, supporting distributed configurations for scaling and high availability, and generalizing the roles that gateway applications can play beyond CGI's "responder" role.
 
-For more information on FastCGI, including an interface specification and a module for the Apache server, visit the [www.fastcgi.com Web site](http://www.fastcgi.com/).
+For more information on FastCGI, including an interface specification and a module for the Apache server, visit the [www.fastcgi.com Web site](https://web.archive.org/web/20160305160340/http://www.fastcgi.com/).
 
 ### 1\. Introduction
 
@@ -104,6 +104,6 @@ Other roles will be defined in the future. For instance, a "logger" role would b
 
 Today's Web business applications need a platform that's fast, open, maintainable, straightforward, stable, and secure. FastCGI's design meets these requirements, and provides a logical migration path from the proven and widely deployed CGI technology. This allows developers to take advantage of FastCGI's benefits without losing their existing investment in CGI applications.
 
-For more information about FastCGI, visit the [www.fastcgi.com Web site](http://www.fastcgi.com/).
+For more information about FastCGI, visit the [www.fastcgi.com Web site](https://web.archive.org/web/20160305160340/http://www.fastcgi.com/).
 
 **© Copyright 1996 - 2014 Open Market, Rob Saccoccio & others, All rights reserved. [Web design](http://www.cosmicsitedesign.com/) by CosmicSiteDesign.com**
