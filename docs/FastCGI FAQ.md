@@ -84,8 +84,9 @@ This is the result of a bug in the Apache header files (reported Sep 1999, PR# 5
 The problem is due to the fact that httpd was compiled with optimization and ap_os_is_path_absolute() was inlined, but when mod_fastcgi.so was compiled optimization was not enabled and ap_os_is_path_absolute() was expected to be an external symbol.
 
 Try this apxs invocation instead (it will turn on optimization and inline ap_os_is_path_apsolute()):
-
-> apxs -Wc,-O -o mod_fastcgi.so -c *.c
+```
+# apxs -Wc,-O -o mod_fastcgi.so -c *.c
+```
 
 ##### [Back to Top](#top)
 
@@ -164,14 +165,16 @@ This creates a version of PHP which speaks the FastCGI protocol. Unfortunately, 
 
 Setting up Apache to use PHP is similar to the normal configuration. Simply add the following lines to your httpd.conf, either in a VirtualHost directive, or in the main context:
 
-> <font face="Courier New, Courier, mono" size="-1">FastCgiServer /export/httpd/cgi-bin/php  
-> AddHandler php-fastcgi .php  
-> <Location /cgi-bin/php>  
->     SetHandler fastcgi-script  
-> </Location>  
-> Action php-fastcgi /cgi-bin/php  
-> DirectoryIndex index.html index.shtml index.cgi index.php  
-> AddType application/x-httpd-php .php</font>
+```
+FastCgiServer /export/httpd/cgi-bin/php  
+AddHandler php-fastcgi .php  
+<Location /cgi-bin/php>  
+    SetHandler fastcgi-script  
+</Location>  
+Action php-fastcgi /cgi-bin/php  
+DirectoryIndex index.html index.shtml index.cgi index.php  
+AddType application/x-httpd-php .php
+```
 
 Finally, copy or hard link your PHP binary from wherever you installed it to _/export/httpd/cgi-bin/php_. Now there is something there to run.
 
@@ -181,13 +184,15 @@ These lines set up the Web server to pass requests for things of type .php to yo
 
 PHP bypasses the normal FastCGI process manager, and uses its own system to control how many copies of the PHP binary are running, bringing up 8 by default. Since you often want finer control, I usually install a tiny shell script with configuration variables in it into the cgi-bin directory and have it run PHP instead:
 
-> <font face="Courier New, Courier, mono" size="-1">#!/bin/sh</font>
-> 
-> <font face="Courier New, Courier, mono" size="-1">PHPRC="/usr/local/etc/php/client"  
-> export PHPRC  
-> PHP_FCGI_CHILDREN=4  
-> export PHP_FCGI_CHILDREN  
-> exec /usr/local/bin/php-fcgi</font>
+```
+#!/bin/sh
+
+PHPRC="/usr/local/etc/php/client"  
+export PHPRC  
+PHP_FCGI_CHILDREN=4  
+export PHP_FCGI_CHILDREN  
+exec /usr/local/bin/php-fcgi
+```
 
 This script lets you set a specific .ini file. In the example, PHP will read in _/usr/local/etc/php/client/php.ini_ for configuration parameters. The number of running children is controlled by the other environment variable.
 
