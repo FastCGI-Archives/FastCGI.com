@@ -201,14 +201,14 @@ Here's a simple FastCGI application:
 
 void main(void)
 {
-int count = 0;
-while(FCGI_Accept() >= 0) {
-printf("Content-type: text/html\r\n");
-printf("\r\n");
-printf("Hello world!<br>\r\n");
-printf("Request number %d.", count++);
-}
-exit(0);
+    int count = 0;
+    while(FCGI_Accept() >= 0) {
+        printf("Content-type: text/html\r\n");
+        printf("\r\n");
+        printf("Hello world!<br>\r\n");
+        printf("Request number %d.", count++);
+    }
+    exit(0);
 }
 ```
 
@@ -223,7 +223,7 @@ The application library was designed to make migration of existing CGI programs 
 ```
 _Initialize application_;  
 while(FCGI_Accept() >= 0) {  
-_Process request_;  
+    _Process request_;  
 }
 ```
 
