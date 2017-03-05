@@ -220,10 +220,12 @@ The <tt>fcgi_stdio.h</tt> header file provides the FastCGI replacement routines 
 
 The application library was designed to make migration of existing CGI programs as simple as possible. Many applications can be converted by adding a loop around the main request processing code and recompiling with the FastCGI application library. FastCGI applications have the following structure, with an initialization section and a request processing loop:
 
-_Initialize application;  
-_<tt>while(FCGI_Accept() >= 0) {</tt>  
+```
+_Initialize application_;  
+while(FCGI_Accept() >= 0) {  
 _Process request_;  
-<tt>}</tt>
+}
+```
 
 To ease migration to FastCGI, executables built with the application library can run as either CGI or FastCGI programs, depending on how they are invoked. The library detects the execution environment and automatically selects FastCGI or regular I/O routines, as appropriate.
 
