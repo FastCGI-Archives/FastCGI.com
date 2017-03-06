@@ -1,3 +1,13 @@
+<div id="wrapper">
+
+<div id="heading">Module mod_fastcgi</div>
+
+<div id="content">
+
+<div id="node-25" class="node">
+
+<div class="content">
+
 ![[APACHE FEATHER BANNER]](http://httpd.apache.org/docs/images/sub.gif)
 
 # Module mod_fastcgi
@@ -336,6 +346,8 @@ For historic reasons the mis-spelling `singleThreshhold` is also accepted.</dd>
 
 <tr>
 
+<td></td>
+
 <td>`FastCgiExternalServer _filename_ -socket _filename [option ...]_`</td>
 
 </tr>
@@ -421,6 +433,8 @@ _Option_ can be one of (case insensitive):
 
 <tr>
 
+<td></td>
+
 <td>**Windows NT: ** `FastCgiIpcDir _name_`</td>
 
 </tr>
@@ -435,11 +449,15 @@ _Option_ can be one of (case insensitive):
 
 <tr>
 
+<td></td>
+
 <td>**Unix/Apache2: ** `FastCgiIpcDir RUNTIMEDIR/fastcgi`</td>
 
 </tr>
 
 <tr>
+
+<td></td>
 
 <td>**Windows NT: ** `FastCgiIpcDir \\\\.\\pipe\\ModFastCgi\\`</td>
 
@@ -779,4 +797,12 @@ Setting the `FastCgiAccessCheckerAuthoritative` directive explicitly to _Off_ al
 
 By default, control is not passed on and a failed access check will result in a Forbidden reply. Disabling the default should be carefully considered.
 
-**© Copyright 1996 - 2008 Open Market, Rob Saccoccio & others, All rights reserved. [Web design](http://www.cosmicsitedesign.com/) by CosmicSiteDesign.com**
+</div>
+
+</div>
+
+</div>
+
+<div id="footer">© Copyright 1996 - 2008 Open Market, Rob Saccoccio & others, All rights reserved. [Web design](http://www.cosmicsitedesign.com/) by CosmicSiteDesign.com</div>
+
+</div>
