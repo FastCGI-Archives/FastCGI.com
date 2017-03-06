@@ -85,6 +85,7 @@ Custom failure responses from FastCGI authorizer applications are not supported 
 * * *
 
 ## <a name="FastCgiServer">FastCgiServer</a>
+
 | | |
 |  --- | --- |
 |[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiServer _filename_ _[option ...]_`|
@@ -347,10 +348,10 @@ _Option_ can be one of (case insensitive):
 | | |
 |  --- | --- |
 |[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|**Unix: ** `FastCgiIpcDir _directory_`|
-|**Windows NT: ** `FastCgiIpcDir _name_`|
+| |**Windows NT: ** `FastCgiIpcDir _name_`|
 |[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|**Unix/Apache: ** `FastCgiIpcDir logs/fastcgi`|
-|**Unix/Apache2: ** `FastCgiIpcDir RUNTIMEDIR/fastcgi`|
-|**Windows NT: ** `FastCgiIpcDir \\\\.\\pipe\\ModFastCgi\\`|
+| |**Unix/Apache2: ** `FastCgiIpcDir RUNTIMEDIR/fastcgi`|
+| |**Windows NT: ** `FastCgiIpcDir \\\\.\\pipe\\ModFastCgi\\`|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|server config|
 
 **Unix: ** The `FastCgiIpcDir` directive specifies _directory_ as the place to store (and in the case of external FastCGI applications, find) the Unix socket files used for communication between the applications and the web server. If the directory does not begin with a slash (/) then it is assumed to be relative to the [ServerRoot](http://httpd.apache.org/docs/mod/core.html#serverroot). If the directory doesn't exist, an attempt is made to create it with appropriate permissions. Do not specify a directory that is not on a local filesystem! If you use the default directory (or another directory within `/tmp`), `mod_fastcgi` will break if your system periodically deletes files from `/tmp`.
