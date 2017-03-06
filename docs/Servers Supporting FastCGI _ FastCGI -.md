@@ -5,7 +5,7 @@
 *   Apache - [http://www.apache.org](http://www.apache.org/)  
 
     mod_fastcgi is a free, open-source Apache httpd module.  
-    Current: [download](http://www.fastcgi.com/dist/) | [docs](http://www.fastcgi.com/drupal/node/25) | [browse](http://www.fastcgi.com/drupal/node/mod_fastcgi/) Win32 DLL-[1.3](http://www.fastcgi.com/drupal/node/dist/)/[2.0](http://www.fastcgi.com/drupal/node/dist/) | git: [history](http://repo.or.cz/w/mod_fastcgi.git)
+    Current: [download](https://github.com/FastCGI-Archives/FastCGI.com/raw/master/original_snapshot/mod_fastcgi-SNAP-0910052141.tar.gz) | [docs](http://www.fastcgi.com/drupal/node/25) | [browse git](https://github.com/FastCGI-Archives/mod_fastcgi/) 
     
     [Apache install instructions](http://www.fastcgi.com/drupal/node/3?q=node/9)  
     [Apache FAQ](http://www.fastcgi.com/drupal/node/3?q=node/17)
