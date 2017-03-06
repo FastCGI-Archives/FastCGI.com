@@ -21,7 +21,8 @@
 
 *   <a name="typical_httpd.conf">What does a typical httpd.conf look like?</a> _Please_ consult the mod_fastcgi documentation for details (IOW read it).
 
-    <pre>LoadModule fastcgi_module modules/mod_fastcgi.so
+    ```
+LoadModule fastcgi_module modules/mod_fastcgi.so
 
     <IfModule mod_fastcgi.c>
         # URIs that begin with /fcgi-bin/, are found in /var/www/fcgi-bin/
@@ -51,7 +52,7 @@
             SetHandler fastcgi-script
         </Directory>
     </IfModule>
-    </pre>
+    ```
 
 *   <a name="FastCGIExternalServer">What is the path used with FastCGIExternalServer?</a>
 
@@ -63,9 +64,10 @@
 
         Example:
 
-        <pre>{Some server document root /var/www/htdocs}
+        ```
+{Some server document root /var/www/htdocs}
         FastCGIExternalServer /var/www/htdocs/extprog -host 127.0.0.1:9000
-        </pre>
+        ```
 
         This seems easiest but has some shortcomings. Firstly there is the combination of real and virtual filesystem locations in the same place. If you are trying to keep all your files well organized and you have source files for the external server in one place and map URIs to the file system into another, there is a less than clear demarcation between what is real and what is virtual. Most importantly, if you want to use the same external server for more than one server, site, or URI, giving it a virtual place within a real path makes all that more confusing.
 
@@ -73,10 +75,11 @@
 
         Example:
 
-        <pre>    FastCGIExternalServer /fastcgiext/extprog -host 127.0.0.1:9000
+        ```
+    FastCGIExternalServer /fastcgiext/extprog -host 127.0.0.1:9000
 
             {Some server docutment root /var/www/htdocs}
             Alias /extprog /fastcgiext/extprog
-        </pre>
+        ```
 
         This has the potential for more clarity. As a convention all external servers could be mapped into a virtual hierarchy and then aliases used to map into that from any and all places. This keeps the servers well organized and out of the way from file system locations and Aliases can map into them from where they are needed.
