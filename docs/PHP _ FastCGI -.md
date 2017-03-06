@@ -3,7 +3,7 @@
 Yes! As a matter of fact, you can set up multiple versions of PHP, and also utilize suexec to support different users with their own instances of PHP. It reduces the memory footprint of your web server, but still gives you the speed and power of the entire PHP language.  
 Build PHP
 
-First of all, build PHP. All of versions 4 and versions 5 supports the FastCGI flag. Simply specify where to get the FastCGI libraries from (download and install them from the [http://www.fastcgi.com](http://www.fastcgi.com/ "http://www.fastcgi.com") website), and do the normal build with whatever other options you require:
+First of all, build PHP. All of versions 4 and versions 5 supports the FastCGI flag. Simply specify where to get the FastCGI libraries from (download and install them from the [http://www.fastcgi.com](https://web.archive.org/web/20110716173323/http://www.fastcgi.com) website), and do the normal build with whatever other options you require:
 
 `./configure [ your options ] --with-fastcgi=/usr/local`
 
