@@ -1,0 +1,1503 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+<title>Module mod_fastcgi | FastCGI - </title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<div id="wrapper">
+	<div id="heading">
+		Module mod_fastcgi	</div> <!-- end heading -->
+	<div id="content">
+												<div id="node-25" class="node">
+
+
+
+  
+  <div class="content">
+    <P CLASS="c1">
+<IMG SRC="http://httpd.apache.org/docs/images/sub.gif" ALT="[APACHE FEATHER BANNER]" WIDTH="500" HEIGHT=
+"62" />
+</p>
+<H1 CLASS="c2">
+Module mod_fastcgi
+</h1>
+<P>
+This 3<SUP>rd</sup> party module provides support for the FastCGI protocol. FastCGI is a language
+independent, scalable, open extension to CGI that provides high performance and persistence without the
+limitations of server specific APIs.
+</p>
+
+<P>
+FastCGI applications are not limited to a particular development language (the protocol is open). FastCGI
+application libraries currently exist for Perl, C/C++, Java, Python, TCL, SmallEiffel, and Smalltalk.
+</p>
+<P>
+FastCGI applications use TCP or Unix sockets to communicate with the web server. This scalable architecture
+allows applications to run on the same platform as the web server or on many machines scattered across an
+enterprise network.
+</p>
+<P>
+FastCGI applications are portable to other web server platforms. FastCGI is supported either directly or
+through commercial extensions by most popular web servers.
+</p>
+<P>
+
+FastCGI applications are fast because they&#39;re persistent. There is no per-request startup and
+initialization overhead. This makes possible the development of applications which would otherwise be
+impractical within the CGI paradigm (e.g. a huge Perl script, or an application which requires a connection
+to one or more databases).
+</p>
+<P>
+See the FastCGI <A HREF="http://www.fastcgi.com/">website</a> for more information. To receive FastCGI
+related announcements and notifications of software updates, subscribe to <A HREF=
+"http://fastcgi.com/fastcgi-announce">fastcgi-announce</a>. To participate in the discussion of
+<CODE>mod_fastcgi</code> and FastCGI application development, subscribe to <A HREF=
+"http://fastcgi.com/fastcgi-developers">fastcgi-developers</a>.
+</p>
+
+<H2>
+Summary
+</h2>
+<P>
+For information about building and installing the module, see the INSTALL document
+that came with the distribution.
+</p>
+<P>
+FastCGI applications under <CODE>mod_fastcgi</code> are defined as one of three types: static, dynamic, or
+external. They&#39;re configured using the <A HREF="#fastcgiserver">FastCgiServer</a>, <A HREF=
+"#FastCgiConfig">FastCgiConfig</a>, and <A HREF="#FastCgiExternalServer">FastCgiExternalServer</a> <A HREF=
+"#directives">directives</a> respectively. Any URI that Apache identifies as a FastCGI application and
+which hasn&#39;t been explicitly configured using a <A HREF="#fastcgiserver">FastCgiServer</a> or <A HREF=
+"#FastCgiExternalServer">FastCgiExternalServer</a> directive is handled as a dynamic application (see the
+<A HREF="#FastCgiConfig">FastCgiConfig</a> directive for more information).
+</p>
+
+<P>
+FastCGI static and dynamic applications are spawned and managed by the FastCGI Process Manager, fcgi-pm.
+The process manager is spawned by Apache at server initialization. External applications are presumed to be
+started and managed independently.
+</p>
+<P>
+Apache must be configured to identify requests for FastCGI URIs. <CODE>mod_fastcgi</code> registers (with
+Apache) a handler type of <CODE>fastcgi-script</code> for this purpose.
+</p>
+<P>
+
+To configure Apache to handle all files (within the scope of the directive) as FastCGI applications (e.g.
+for a fcgi-bin directory):
+</p>
+<BLOCKQUOTE>
+<P>
+<CODE><A HREF="http://httpd.apache.org/docs/mod/mod_mime.html#sethandler">SetHandler</a>
+fastcgi-script</code>
+</p>
+</blockquote>
+
+<P>
+To configure Apache to handle files (within the scope of the directive) with the specified extension(s) as
+FastCGI applications:
+</p>
+<BLOCKQUOTE>
+<P>
+<CODE><A HREF="http://httpd.apache.org/docs/mod/mod_mime.html#addhandler">AddHandler</a> fastcgi-script
+fcg fcgi fpl</code>
+</p>
+</blockquote>
+
+<P>
+Consult the Apache documentation for more information regarding these and other directives which affect
+request handling (such as <CODE><A HREF=
+"http://httpd.apache.org/docs/mod/mod_actions.html#action">Action</a>).</code>
+</p>
+<P>
+Dynamic FastCGI applications require the <CODE>ExecCGI</code> option be enabled (see the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#options"><CODE>Options</code></a> directive) in the
+application&#39;s directory.
+</p>
+
+<H2>
+Notes
+</h2>
+<P>
+<CODE>mod_fastcgi</code> logs FastCGI application error (stderr) output to the server log associated with
+the request. Errors reported by the FastCGI process manager, fcgi-pm, are reported to the main server log
+(typically, logs/error_log). Data written to stdout or stderr before entering the FastCGI <EM>accept</em>
+loop or via a mechanism that is not FastCGI protocol aware will also be directed to the main server log. If
+Apache&#39;s <A HREF="http://httpd.apache.org/docs/mod/core.html#loglevel"><CODE>LogLevel</code></a> is set
+to <CODE>info</code> additional informational messages are printed to the logs, these messages may be
+especially helpful while debugging a configuration.
+</p>
+
+<P>
+Under Unix, expect your FastCGI application to see SIGPIPE, SIGUSR1, and SIGTERM. The latest FastCGI C, C++
+and Perl application library installs default handlers if none are installed by the application. If an http
+client aborts a request before it completes, mod_fastcgi does too - this results in a SIGPIPE to the
+FastCGI application. At a minimum, SIGPIPE should be ignored (applications spawned by mod_fastcgi have this
+setup automatically). Ideally, it should result in an early abort of the request handling within your
+application and a return to the top of the FastCGI accept() loop. Apache uses SIGUSR1 to request a
+&quot;graceful&quot; process restart/shutdown. It is sent to Apache&#39;s process group (which includes
+applications spawned by mod_fastcgi). Ideally, it should result in a FastCGI application finishing the
+current request, if any, and then an exit. The mod_fastcgi process manager isn&#39;t particularly patient
+though (there&#39;s room for improvement here) and since it has to shutdown too, sends a SIGTERM to all of
+the FastCGI applications it is responsible for. Apache will restart the process manager and it will restart
+its managed applications (as if the server was just started). SIGTERM is, well, SIGTERM - your application
+should exit quickly.
+</p>
+<P>
+Under Windows, there are no signals. A shutdown event is used instead. This is setup by mod_fastcgi and
+honored by the latest version of the C, C++, and Perl application library. If your using a library which
+doesn&#39;t support this, your application will not get shutdown during an Apache restart/shutdown
+(there&#39;s room for improvement here).
+</p>
+
+<P>
+To pass per-request environment variables to FastCGI applications, have a look at: <A HREF=
+"http://httpd.apache.org/docs/mod/mod_env.html"><CODE>mod_env</code></a> (<CODE>SetEnv</code>,
+<CODE>PassEnv</code>, <CODE>UnSetEnv</code>), <A HREF=
+"http://httpd.apache.org/docs/mod/mod_setenvif.html"><CODE>mod_setenvif</code></a>
+(<CODE>BrowserMatch</code>, <CODE>BrowserMatchNoCase</code>, <CODE>SetEnvIf</code>,
+<CODE>SetEnvIfNoCase</code>), and <A HREF=
+"http://httpd.apache.org/docs/mod/mod_rewrite.html"><CODE>mod_rewrite</code></a> (if you&#39;re feeling
+adventurous).
+</p>
+
+<P>
+FastCGI application output is buffered by default. This is not the case for CGI scripts (under Apache 1.3).
+To override the default behavior, use the <CODE>-flush</code> option (not available for dynamic
+applications). 
+</p>
+<P>
+Redirects are handled similarly to CGI. Location headers with values that begin with &quot;/&quot; are
+treated as internal-redirects; otherwise, they are treated as external redirects (302).
+</p>
+<P>
+
+Session affinity (as well as distribution) should be achievable outside of <CODE>mod_fastcgi</code> using
+<A HREF="http://httpd.apache.org/docs/mod/mod_rewrite.html"><CODE>mod_rewrite</code></a>. If you get this
+working, please post the details to <A HREF=
+"mailto:fastcgi-developers@fastcgi.com">fastcgi-developers@fastcgi.com</a> so they can be included here.
+</p>
+<H2>
+FastCGI Specification Compliance
+</h2>
+<P>
+
+The FastCGI specification is not implemented in its entirety and I&#39;ve deviated a bit as well resulting
+in some Apache specific features.
+</p>
+<P>
+The file descriptors for stdout and stderr are left open. This is prohibited by the specification. I
+can&#39;t see any reason to require that they be closed, and leaving them open prevents FastCGI
+applications which were not completely ported to FastCGI from failing miserably. This does not mean the
+applications shouldn&#39;t be fixed such that this doesn&#39;t occur, but is invaluable when using a
+3<SUP>rd</sup> party library (without source code) which expects to be able to write to stderr. Anything
+written to stdout or stderr in this manner will be directed to the main server log.
+</p>
+<P>
+
+The Filter and Log Roles are not supported. The Filter Role has little value in Apache until the output of
+one handler can be piped into another (Apache 2.0 is expected to support this). The Log Role has some
+value, but Apache&#39;s &quot;piped logs&quot; feature is similar (and is even more CPU friendly).
+</p>
+<P>
+The FastCGI protocol supports a feature, described in the specificiation as &quot;multiplexing&quot;, that
+allows a single client-server connection to be simultaneously shared by multiple requests. This is not
+supported. This does *not* prevent FastCGI applications from supporting multiple simultaneous requests over
+independent connections. Of course, the application has to be specifically designed to do so by using a
+threaded or select/poll based server model.
+</p>
+<P>
+The Authorizer Role has three variations corresponding to three specific Apache request handling
+phases:&nbsp; Authentication, Authorization, and Access Control. <CODE>mod_fastcgi</code> sets up the
+(Apache specific) environment variable &quot;FCGI_APACHE_ROLE&quot; to indicate which Apache authorizer
+phase is being performed.
+</p>
+
+<P>
+Authorizers under <CODE>mod_fastcgi</code> are sent nearly all of the standard environment variables
+typically available to CGI/FastCGI request handlers including some explicitly precluded by the FastCGI
+specification (for authorizers); I didn&#39;t see the point in leaving them out. All headers returned by a
+FastCGI Authorizer in a successful response (Status: 200) are passed to sub-processes (CGI/FastCGI
+invocations) as environment variables rather than just those prefixed by <CODE>Variable-</code> as the
+FastCGI specification calls for; I didn&#39;t see the point in leaving them out either. FastCGI
+specification compliant authorizer behavior can be obtained by using the <CODE>-compat</code> option to the
+Auth server directives.
+</p>
+<P>
+
+Custom failure responses from FastCGI authorizer applications are not supported (speak up if you need
+this). See the <A HREF="http://httpd.apache.org/docs/mod/core.html#errordocument">ErrorDocument</a>
+directive for a workaround (a CGI/FastCGI application can serve the error document).
+</p>
+<H2>
+<A NAME="directives">Directives</a>
+</h2>
+<UL>
+<LI>
+
+<A HREF="#FastCgiServer"><CODE>FastCgiServer</code></a>
+</li>
+<LI>
+<A HREF="#FastCgiConfig"><CODE>FastCgiConfig</code></a>
+</li>
+<LI>
+<A HREF="#FastCgiExternalServer"><CODE>FastCgiExternalServer</code></a>
+
+</li>
+<LI>
+<A HREF="#FastCgiIpcDir"><CODE>FastCgiIpcDir</code></a>
+</li>
+<LI>
+<A HREF="#FastCgiWrapper"><CODE>FastCgiWrapper</code></a>
+</li>
+<LI>
+
+<A HREF="#FastCgiAuthenticator"><CODE>FastCgiAuthenticator</code></a>
+</li>
+<LI>
+<A HREF="#FastCgiAuthenticatorAuthoritative"><CODE>FastCgiAuthenticatorAuthoritative</code></a>
+</li>
+<LI>
+<A HREF="#FastCgiAuthorizer"><CODE>FastCgiAuthorizer</code></a>
+
+</li>
+<LI>
+<A HREF="#FastCgiAuthorizerAuthoritative"><CODE>FastCgiAuthorizerAuthoritative</code></a>
+</li>
+<LI>
+<A HREF="#FastCgiAccessChecker"><CODE>FastCgiAccessChecker</code></a>
+</li>
+<LI>
+
+<A HREF="#FastCgiAccessCheckerAuthoritative"><CODE>FastCgiAccessCheckerAuthoritative</code></a>
+</li>
+</ul>
+<HR />
+<H2>
+<A NAME="FastCgiServer">FastCgiServer</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiServer <EM>filename</em> <EM>[option ...]</em></code> 
+</td>
+
+</tr>
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+<TD>
+server config, virtual host
+</td>
+</tr>
+
+</table>
+<P>
+The <CODE>FastCgiServer</code> directive defines <EM>filename</em> as a static FastCGI application. If the
+filename does not begin with a slash (/) then it is assumed to be relative to the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#serverroot">ServerRoot</a>.
+</p>
+<P>
+
+By default, the Process Manager will start one instance of the application with the default configuration
+specified (in parentheses) below. Should a static application instance die for any reason
+<CODE>mod_fastcgi</code> will spawn another to replace it and log the event (at the <CODE>warn</code> <A
+HREF="http://httpd.apache.org/docs/mod/core.html#loglevel"><CODE>LogLevel</code>).
+</a
+href="http://httpd.apache.org/docs/mod/core.html#loglevel"></p>
+<P>
+<B>Note:</b> Using <CODE>FastCgiServer</code> within a
+<A HREF="http://httpd.apache.org/docs/mod/core.html#virtualhost">VirtualHost</a>
+
+does not necessarily limited access to that host.  If <EM>filename</em> is
+accessible via other virtual hosts, they too can leverage the same definition.
+</p>
+<P>
+<EM>Option</em> can be one of (case insensitive):
+</p>
+<DL>
+<DT>
+
+<CODE><STRONG>-appConnTimeout <EM>n</em></strong> (0 seconds)</code>
+</dt>
+<DD>
+<STRONG>Unix:&nbsp;</strong> The number of seconds to wait for a connection to the FastCGI application
+to complete or 0 to indicate a blocking <CODE>connect()</code> should be used. Blocking
+<CODE>connect()</code>s have an OS dependent internal timeout<CODE>.</code> If the timeout expires, a
+SERVER_ERROR results. For non-zero values, this is the amount of time used in a <CODE>select()</code>
+
+to write to the file descriptor returned by a non-blocking <CODE>connect().</code> Non-blocking
+<CODE>connect()</code>s are troublesome on many platforms. See also <CODE>-idle-timeout</code>, it
+produces similar results but in a more portable manner.<BR />
+<STRONG>Windows NT:&nbsp;</strong> TCP based applications work as above. Named pipe based applications
+(static applications configured without the <CODE>-port</code> option and dynamic applications) use
+this value successfully to limit the amount of time to wait for a connection (i.e. it&#39;s not
+&quot;troublesome&quot;). By default, this is 90 seconds (FCGI_NAMED_PIPE_CONNECT_TIMEOUT in
+mod_fastcgi.h).
+</dd>
+
+<DT>
+<CODE><STRONG>-group <EM>groupname|#gid</em></strong> (none)</code>
+</dt>
+<DD>
+<STRONG>Unix (only):</strong> When <A HREF="#FastCgiWrapper">FastCgiWrapper</a> is in use, the group is
+used to invoke the wrapper. The <CODE>-group</code> option must be used together with
+<CODE>-user</code>.
+</dd>
+
+<DT>
+<CODE><STRONG>-idle-timeout <EM>n</em></strong> (30 seconds)</code>
+</dt>
+<DD>
+The number of seconds of FastCGI application inactivity allowed before the request is aborted and the
+event is logged (at the <CODE>error</code> <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#loglevel"><CODE>LogLevel</code></a>). The inactivity timer
+applies only as long as a connection is pending with the FastCGI application. If a request is queued to
+an application, but the application doesn&#39;t respond (by writing and flushing) within this period,
+the request will be aborted. If communication is complete with the application but incomplete with the
+client (the response is buffered), the timeout does not apply.
+</dd>
+
+<DT>
+<CODE><STRONG>-initial-env <EM>name[=[value]]</em></strong> (none)</code>
+</dt>
+<DD>
+A name-value pair to be passed in the FastCGI application&#39;s <EM>initial</em> environment. To pass a
+variable from Apache&#39;s environment, don&#39;t provide the &quot;=&quot; (if the variable isn&#39;t
+actually in the environment, it will be defined without a value). To define a variable without a value,
+provide the &quot;=&quot; without any value. The option can be used repeatedly.
+</dd>
+
+<DT>
+<CODE><STRONG>-init-start-delay <EM>n</em></strong> (1 second)</code>
+</dt>
+<DD>
+The minimum number of seconds between the spawning of instances of this application. This delay
+decreases the demand placed on the system at server initialization.
+</dd>
+<DT>
+
+<CODE><STRONG>-flush</strong> (none)</code>
+</dt>
+<DD>
+Force a write to the client as data is received from the application. By default,
+<CODE>mod_fastcgi</code> buffers data in order to free the application as quickly as possible.
+</dd>
+<DT>
+
+<CODE><STRONG>-listen-queue-depth <EM>n</em></strong> (100)</code>
+</dt>
+<DD>
+The depth of <CODE>listen()</code> queue (also known as the backlog) shared by all of the instances of
+this application. A deeper listen queue allows the server to cope with transient load fluctuations
+without rejecting requests; it does not increase throughput. Adding additional application instances
+may increase throughput/performance, depending upon the application and the host.
+</dd>
+<DT>
+
+<CODE><STRONG>-min-server-life <EM>n</em></strong> (30)</code>
+</dt>
+<DD>
+The minimum number of seconds the application must run for before its restart
+interval is increased to 600 seconds.  The server will get 3 tries to run for at least this
+number of seconds.
+</dd>
+<DT>
+<CODE><STRONG>-nph</strong></code>
+
+</dt>
+<DD>
+Instructs mod_fastcgi not to parse the headers.  See the Apache documentation for more information
+about <em>nph</em> (non parse header) scripts.
+</dd>
+<DT>
+<CODE><STRONG>-pass-header <EM>header</em></strong> (none)</code>
+
+</dt>
+<DD>
+The name of an HTTP Request Header to be passed in the <EM>request</em> environment. This option makes
+available the contents of headers which are normally not available (e.g. Authorization) to a CGI
+environment.
+</dd>
+<DT>
+<CODE><STRONG>-port <EM>n</em></strong> (none)</code>
+
+</dt>
+<DD>
+The TCP port number (1-65535) the application will use for communication with the web server. This
+option makes the application accessible from other machines on the network (as well as this one). The
+<CODE>-socket</code> and <CODE>-port</code> options are mutually exclusive.
+</dd>
+<DT>
+<CODE><STRONG>-priority <EM>n</em></strong> (0)</code>
+
+</dt>
+<DD>
+The process priority to be assigned to the application instances (using <CODE>setpriority()</code>).
+</dd>
+<DT>
+<CODE><STRONG>-processes <EM>n</em></strong> (1)</code>
+
+</dt>
+<DD>
+The number of instances of the application to spawn at server initialization.
+</dd>
+<DT>
+<CODE><STRONG>-restart-delay <EM>n</em></strong> (5 seconds)</code>
+</dt>
+
+<DD>
+The minimum number of seconds between the respawning of failed instances of this application. This
+delay prevents a broken application from soaking up too much of the system.
+</dd>
+<DT>
+<CODE><STRONG>-socket <EM>filename</em></strong> (generated)</code>
+</dt>
+<DD>
+
+<STRONG>Unix:&nbsp;</strong> The filename of the Unix domain socket that the application will use for
+communication with the web server. The module creates the socket within the directory specified by
+<CODE><A HREF="#FastCgiIpcDir">FastCgiIpcDir</a></code>. This option makes the application accessible
+to other applications (e.g. <CODE>cgi-fcgi</code>) on the same machine or via an external FastCGI
+application definition (<CODE><A HREF="#FastCgiExternalServer">FastCgiExternalServer</a></code>). If
+neither the <CODE>-socket</code> nor the <CODE>-port</code> options are given, the module generates a
+Unix domain socket filename. The <CODE>-socket</code> and <CODE>-port</code> options are mutually
+exclusive.
+</dd>
+
+<DD>
+<STRONG>Windows NT:&nbsp;</strong> The name of the named pipe that the application will use for
+communication with the web server. The module creates the named pipe under the named pipe root
+specified by <CODE><A HREF="#FastCgiIpcDir">FastCgiIpcDir</a></code>. This option makes the application
+accessible to other applications (e.g. <CODE>cgi-fcgi</code>) on the same machine or via an external
+FastCGI application definition (<CODE><A HREF=
+"#FastCgiExternalServer">FastCgiExternalServer</a></code>). If neither the <CODE>-socket</code> nor the
+<CODE>-port</code> options are given, the module generates a name for the named pipe. The
+<CODE>-socket</code> and <CODE>-port</code> options are mutually exclusive.
+</dd>
+
+<DT>
+<CODE><STRONG>-user <EM>username|#uid</em></strong> (none)</code>
+</dt>
+<DD>
+<STRONG>Unix (only):</strong> When <A HREF="#FastCgiWrapper">FastCgiWrapper</a> is in use, the user is
+used to invoke the wrapper. The <CODE>-user</code> option must be used together with
+<CODE>-group</code>.
+</dd>
+
+</dl>
+<HR />
+<H2>
+<A NAME="FastCgiConfig">FastCgiConfig</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiConfig <EM>option [option ...]</em></code> 
+</td>
+</tr>
+<TR>
+
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+<TD>
+server config
+</td>
+</tr>
+</table>
+<P>
+
+The <CODE>FastCgiConfig</code> directive defines the default parameters for <EM>all</em> dynamic FastCGI
+applications. This directive does not affect static or external applications in any way.
+</p>
+<P>
+Dynamic applications are not started at server initialization, but upon demand. If the demand is heavy,
+additional application instances are started. As the demand fades, application instances are killed off.
+Many of the options govern this process.
+</p>
+<P>
+<EM>Option</em> can be one of (case insensitive):
+</p>
+
+<DL>
+<DT>
+<CODE><STRONG>-appConnTimeout <EM>n</em></strong> (0 seconds)</code>
+</dt>
+<DD>
+<STRONG>Unix:&nbsp;</strong> The number of seconds to wait for a connection to the FastCGI application
+to complete or 0 to indicate a blocking <CODE>connect()</code> should be used. Blocking
+<CODE>connect()</code>s have an OS dependent internal timeout. If the timeout expires, a SERVER_ERROR
+results. For non-zero values, this is the amount of time used in a <CODE>select()</code> to write to
+the file descriptor returned by a non-blocking <CODE>connect()</code>. Non-blocking
+<CODE>connect()</code>s are troublesome on many platforms. See also <CODE>-idle-timeout</code>, it
+produces similar results but in a more portable manner.<BR />
+
+<STRONG>Windows NT:&nbsp;</strong> TCP based applications work as above. Named pipe based applications
+(static applications configured without the <CODE>-port</code> option and dynamic applications) use
+this value successfully to limit the amount of time to wait for a connection (i.e. it&#39;s not
+&quot;troublesome&quot;). By default, this is 90 seconds (FCGI_NAMED_PIPE_CONNECT_TIMEOUT in
+mod_fastcgi.h).
+</dd>
+<DT>
+<CODE><STRONG>-autoUpdate</strong> (none)</code>
+
+</dt>
+<DD>
+Causes mod_fastcgi to check the modification time of the application on disk before processing each
+request. If the application on disk has been changed, the process manager is notified and all running
+instances of the application are killed off. In general, it&#39;s preferred that this type of
+functionality be built-in to the application (e.g. every 100th request it checks to see if there&#39;s
+a newer version on disk and exits if so). There may be an outstanding problem (bug) when this option is
+used with <CODE>-restart</code>.
+</dd>
+<DT>
+<CODE><STRONG>-flush</strong> (none)</code>
+
+</dt>
+<DD>
+Force a write to the client as data is received from the application. By default,
+<CODE>mod_fastcgi</code> buffers data in order to free the application as quickly as possible.
+</dd>
+<DT>
+<CODE><STRONG>-gainValue <EM>n</em></strong> (0.5)</code>
+
+</dt>
+<DD>
+A floating point value between 0 and 1 used as an exponent in the computation of the exponentially
+decayed connection times load factor of the currently running dynamic FastCGI applications. Old values
+are scaled by (<CODE>1&nbsp;-&nbsp;gainValue</code>), so making it smaller weights old values more than
+the current value (which is scaled by <CODE>gainValue</code>).
+</dd>
+<DT>
+<CODE><STRONG>-idle-timeout <EM>n</em></strong> (30 seconds)</code>
+
+</dt>
+<DD>
+The number of seconds of FastCGI application inactivity allowed before the request is aborted and the
+event is logged (at the <CODE>error</code> <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#loglevel"><CODE>LogLevel</code></a>). The inactivity timer
+applies only as long as a connection is pending with the FastCGI application. If a request is queued to
+an application, but the application doesn&#39;t respond (by writing and flushing) within this period,
+the request will be aborted. If communication is complete with the application but incomplete with the
+client (the response is buffered), the timeout does not apply.
+</dd>
+<DT>
+<CODE><STRONG>-initial-env <EM>name[=[value]]</em></strong> (none)</code>
+
+</dt>
+<DD>
+A name-value pair to be passed in the initial environment when instances of applications are spawned.
+To pass a variable from the Apache environment, don&#39;t provide the &quot;=&quot; (if the variable
+isn&#39;t actually in the environment, it will be defined without a value). To define a variable
+without a value, provide the &quot;=&quot; without any value. The option can be used repeatedly.
+</dd>
+<DT>
+
+<CODE><STRONG>-init-start-delay <EM>n</em></strong> (1 second)</code>
+</dt>
+<DD>
+The minimum number of seconds between the spawning of instances of applications. This delay decreases
+the demand placed on the system at server initialization.
+</dd>
+<DT>
+<CODE><STRONG>-killInterval <EM>n</em></strong> (300 seconds)</code>
+
+</dt>
+<DD>
+Determines how often the dynamic application instance killing policy is implemented within the process
+manager. Smaller numbers result in a more aggressive policy, larger numbers a less aggressive policy.
+</dd>
+<DT>
+<CODE><STRONG>-listen-queue-depth <EM>n</em></strong> (100)</code>
+</dt>
+
+<DD>
+The depth of <CODE>listen()</code> queue (also known as the backlog) shared by all instances of
+applications. A deeper listen queue allows the server to cope with transient load fluctuations without
+rejecting requests; it does not increase throughput. Adding additional application instances may
+increase throughput/performance, depending upon the application and the host.
+</dd>
+<DT>
+<CODE><STRONG>-maxClassProcesses <EM>n</em></strong> (10)</code>
+</dt>
+
+<DD>
+The maximum number of dynamic FastCGI application instances allowed to run for any one FastCGI
+application. It must be &lt;= to -maxProcesses (this is not programmatically enforced).
+</dd>
+<DT>
+<CODE><STRONG>-maxProcesses <EM>n</em></strong> (50)</code>
+</dt>
+<DD>
+
+The maximum total number of dynamic FastCGI application instances allowed to run at any one time. It
+must be &gt;= to -maxClassProcesses (this is not programmatically enforced).
+</dd>
+<DT>
+<CODE><STRONG>-min-server-life <EM>n</em></strong> (30)</code>
+</dt>
+<DD>
+The minimum number of seconds a dynamic FastCGI application must run for before its restart
+interval is increased to 600 seconds.  The server will get 3 tries to run for at least this
+number of seconds.
+</dd>
+
+<DT>
+<CODE><STRONG>-minProcesses <EM>n</em></strong> (5)</code>
+</dt>
+<DD>
+The minimum total number of dynamic FastCGI application instances allowed to run at any one time
+without being killed off by the process manager (due to lack of demand).
+</dd>
+<DT>
+
+<CODE><STRONG>-multiThreshold <EM>n</em></strong> (50)</code>
+</dt>
+<DD>
+An integer between 0 and 100 used to determine whether any one instance of a FastCGI application should
+be terminated. If the application has more than one instance currently running, this attribute will be
+used to decide whether one of them should be terminated. If only one instance remains,
+<CODE>singleThreshold</code> is used instead.<BR />
+For historic reasons the mis-spelling <CODE>multiThreshhold</code> is also accepted.
+</dd>
+
+<DT>
+<CODE><STRONG>-pass-header <EM>header</em></strong> (none)</code>
+</dt>
+<DD>
+The name of an HTTP Request Header to be passed in the <EM>request</em> environment. This option makes
+available the contents of headers which are normally not available (e.g. Authorization) to a CGI
+environment.
+</dd>
+
+<DT>
+<CODE><STRONG>-priority <EM>n</em></strong> (0)</code>
+</dt>
+<DD>
+The process priority to be assigned to the application instances (using <CODE>setpriority()</code>).
+</dd>
+
+<DT>
+<CODE><STRONG>-processSlack <EM>n</em></strong> (5)</code>
+</dt>
+<DD>
+If the sum of the number of all currently running dynamic FastCGI applications and
+<CODE>processSlack</code> exceeds <CODE>maxProcesses</code>, the process manager invokes the killing
+policy. This is to improve performance at higher loads by killing some of the most inactive application
+instances before reaching <CODE>maxProcesses</code>.
+</dd>
+
+<DT>
+<CODE><STRONG>-restart</strong> (none)</code>
+</dt>
+<DD>
+Causes the process manager to restart dynamic applications upon failure (similar to static
+applications).
+</dd>
+<DT>
+<CODE><STRONG>-restart-delay <EM>n</em></strong> (5 seconds)</code>
+
+</dt>
+<DD>
+The minimum number of seconds between the respawning of failed instances of applications. This delay
+prevents a broken application from soaking up too much of the system.
+</dd>
+<DT>
+<CODE><STRONG>-singleThreshold <EM>n</em></strong> (0)</code>
+</dt>
+
+<DD>
+An integer between 0 and 100 used to determine whether the last instance of a FastCGI application can
+be terminated. If the process manager computed load factor for the application is lower than the
+specified threshold, the last instance is terminated. In order to make your executables run in the
+&quot;idle&quot; mode for the long time, you would specify a value closer to 1, however if memory or
+CPU time is of primary concern, a value closer to 100 would be more applicable. A value of 0 will
+prevent the last instance of an application from being terminated; this is the default value, changing
+it is not recommended (especially if <CODE>-appConnTimeout</code> is set).<BR />
+For historic reasons the mis-spelling <CODE>singleThreshhold</code> is also accepted.
+</dd>
+
+<DT>
+<CODE><STRONG>-startDelay <EM>n</em></strong> (3 seconds)</code>
+</dt>
+<DD>
+The number of seconds the web server waits patiently while trying to connect to a dynamic FastCGI
+application. If the interval expires, the process manager is notified with hope it will start another
+instance of the application. The <CODE>startDelay</code> must be less than <CODE>appConnTimeout</code>
+
+to be effective.
+</dd>
+<DT>
+<CODE><STRONG>-updateInterval <EM>n</em></strong> (300 seconds)</code>
+</dt>
+<DD>
+The updateInterval determines how often statistical analysis is performed to determine the fate of
+dynamic FastCGI applications.
+</dd>
+
+</dl>
+<HR />
+<H2>
+<A NAME="FastCgiExternalServer">FastCgiExternalServer</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiExternalServer <EM>filename</em> -host <EM>hostname:port [option ...]</em></code> 
+</td>
+</tr>
+
+<TR>
+<TD>
+</td>
+<TD>
+<CODE>FastCgiExternalServer <EM>filename</em> -socket <EM>filename [option ...]</em></code> 
+</td>
+</tr>
+
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+<TD>
+server config, virtual host
+</td>
+</tr>
+</table>
+
+<P>
+The <CODE>FastCgiExternalServer</code> directive defines <EM>filename</em> as an external FastCGI
+application. If <EM>filename</em> does not begin with a slash (/) then it is assumed to be relative to the
+<A HREF="http://httpd.apache.org/docs/mod/core.html#serverroot">ServerRoot</a>. The <EM>filename</em> does
+not have to exist in the local filesystem. URIs that Apache resolves to this <EM>filename</em> will be
+handled by this external FastCGI application.  
+</p>
+
+<P>
+External FastCGI applications are not started by the process manager, they are presumed to be started and
+managed &quot;external&quot; to Apache and mod_fastcgi. The FastCGI devkit provides a simple tool,
+<CODE>cgi-fcgi</code>, for starting FastCGI applications independent of the server (applications can also
+be <EM>self-starting</em>, see the devkit).
+</p>
+<P>
+<B>Note:</b> Using <CODE>FastCgiServer</code> within a
+<A HREF="http://httpd.apache.org/docs/mod/core.html#virtualhost">VirtualHost</a>
+
+does not necessarily limited access to that host.  If <EM>filename</em> is
+accessible via other virtual hosts, they too can leverage the same definition.
+</p>
+<P>
+<EM>Option</em> can be one of (case insensitive):
+</p>
+<DL>
+<DT>
+
+<CODE><STRONG>-appConnTimeout <EM>n</em></strong> (0 seconds)</code>
+</dt>
+<DD>
+<STRONG>Unix:&nbsp;</strong> The number of seconds to wait for a connection to the FastCGI application
+to complete or 0 to indicate a blocking <CODE>connect()</code> should be used. Blocking
+<CODE>connect()</code>s have an OS dependent internal timeout. If the timeout expires, a SERVER_ERROR
+results. For non-zero values, this is the amount of time used in a <CODE>select()</code> to write to
+the file descriptor returned by a non-blocking <CODE>connect()</code>. Non-blocking
+<CODE>connect()</code>s are troublesome on many platforms. See also <CODE>-idle-timeout</code>, it
+produces similar results but in a more portable manner.<BR />
+
+<STRONG>Windows NT:&nbsp;</strong> TCP based applications work as above. Named pipe based applications
+(static applications configured without the <CODE>-port</code> option and dynamic applications) use
+this value successfully to limit the amount of time to wait for a connection (i.e. it&#39;s not
+&quot;troublesome&quot;). By default, this is 90 seconds (FCGI_NAMED_PIPE_CONNECT_TIMEOUT in
+mod_fastcgi.h).
+</dd>
+<DT>
+<CODE><STRONG>-group <EM>groupname|#gid</em></strong> (none)</code>
+
+</dt>
+<DD>
+<STRONG>Unix (only):</strong> When <A HREF="#FastCgiWrapper">FastCgiWrapper</a> is in use, the group is
+used to invoke the wrapper. The <CODE>-group</code> option must be used together with
+<CODE>-user</code>.
+</dd>
+
+<DT>
+<CODE><STRONG>-idle-timeout <EM>n</em></strong> (30 seconds)</code>
+</dt>
+<DD>
+The number of seconds of FastCGI application inactivity allowed before the request is aborted and the
+event is logged (at the <CODE>error</code> <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#loglevel"><CODE>LogLevel</code></a>). The inactivity timer
+applies only as long as a connection is pending with the FastCGI application. If a request is queued to
+an application, but the application doesn&#39;t respond (by writing and flushing) within this period,
+the request will be aborted. If communication is complete with the application but incomplete with the
+client (the response is buffered), the timeout does not apply.
+</dd>
+
+<DT>
+<CODE><STRONG>-flush</strong> (none)</code>
+</dt>
+<DD>
+Force a write to the client as data is received from the application. By default,
+<CODE>mod_fastcgi</code> buffers data in order to free the application as quickly as possible.
+</dd>
+
+<DT>
+<CODE><STRONG>-host <EM>hostname:port</em></strong> (none)</code>
+</dt>
+<DD>
+The hostname or IP address and TCP port number (1-65535) the application uses for communication with
+the web server. The <CODE>-socket</code> and <CODE>-host</code> options are mutually exclusive.
+</dd>
+
+<DT>
+<CODE><STRONG>-nph</strong></code>
+</dt>
+<DD>
+Instructs mod_fastcgi not to parse the headers.  See the Apache documentation for more information
+about <em>nph</em> (non parse header) scripts.
+</dd>
+<DT>
+
+<CODE><STRONG>-pass-header <EM>header</em></strong> (none)</code>
+</dt>
+<DD>
+The name of an HTTP Request Header to be passed in the <EM>request</em> environment. This option makes
+available the contents of headers which are normally not available (e.g. Authorization) to a CGI
+environment.
+</dd>
+<DT>
+
+<CODE><STRONG>-socket <EM>filename</em></strong> (none)</code>
+</dt>
+<DD>
+<STRONG>Unix:&nbsp;</strong> The filename of the Unix domain socket the application uses for
+communication with the web server. The filename is relative to the <CODE><A HREF=
+"#FastCgiIpcDir">FastCgiIpcDir</a></code>. The <CODE>-socket</code> and <CODE>-port</code> options are
+mutually exclusive.
+</dd>
+
+<DD>
+<STRONG>Windows NT:&nbsp;</strong> The name of the named pipe the application uses for communicating
+with the web server. the name is relative to the <CODE><A HREF=
+"#FastCgiIpcDir">FastCgiIpcDir</a></code>. The <CODE>-socket</code> and <CODE>-port</code> options are
+mutually exclusive.
+</dd>
+<DT>
+
+<CODE><STRONG>-user <EM>username|#uid</em></strong> (none)</code>
+</dt>
+<DD>
+<STRONG>Unix (only):</strong> When <A HREF="#FastCgiWrapper">FastCgiWrapper</a> is in use, the user is
+used to invoke the wrapper. The <CODE>-user</code> option must be used together with
+<CODE>-group</code>.
+</dd>
+
+</dl>
+<HR />
+<H2>
+<A NAME="FastCgiIpcDir">FastCgiIpcDir</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<STRONG>Unix:&nbsp;</strong> <CODE>FastCgiIpcDir <EM>directory</em></code> 
+</td>
+</tr>
+
+<TR>
+<TD>
+</td>
+<TD>
+<STRONG>Windows NT:&nbsp;</strong> <CODE>FastCgiIpcDir <EM>name</em></code> 
+</td>
+</tr>
+
+<TR>
+<TD>
+<A HREF=
+"http://httpd.apache.org/docs/mod/directive-dict.html#Default"><STRONG>Default:</strong></a> 
+</td>
+<TD>
+<STRONG>Unix/Apache:&nbsp;</strong> <CODE>FastCgiIpcDir logs/fastcgi</code> 
+</td>
+</tr>
+
+<TR>
+<TD>
+</td>
+<TD>
+<STRONG>Unix/Apache2:&nbsp;</strong> <CODE>FastCgiIpcDir RUNTIMEDIR/fastcgi</code> 
+</td>
+</tr>
+<TR>
+
+<TD>
+</td>
+<TD>
+<STRONG>Windows NT:&nbsp;</strong> <CODE>FastCgiIpcDir \\\\.\\pipe\\ModFastCgi\\</code> 
+</td>
+</tr>
+<TR>
+<TD>
+
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+<TD>
+server config
+</td>
+</tr>
+</table>
+<P>
+<STRONG>Unix:&nbsp;</strong> The <CODE>FastCgiIpcDir</code> directive specifies <EM>directory</em> as the
+place to store (and in the case of external FastCGI applications, find) the Unix socket files used for
+communication between the applications and the web server. If the directory does not begin with a slash (/)
+then it is assumed to be relative to the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#serverroot">ServerRoot</a>. If the directory doesn&#39;t exist,
+an attempt is made to create it with appropriate permissions. Do not specify a directory that is not on a
+local filesystem! If you use the default directory (or another directory within <CODE>/tmp</code>),
+<CODE>mod_fastcgi</code> will break if your system periodically deletes files from <CODE>/tmp</code>.
+</p>
+
+<P>
+<STRONG>Windows NT:&nbsp;</strong> The <CODE>FastCgiIpcDir</code> directive specifies <EM>name</em> as the
+root for the named pipes used for communication between the application and the web server. The
+<EM>name</em> must be in the form of <STRONG>\\\\.\\pipe\\</strong><EM>pipename</em> (notice that the
+backslashes are escaped). The <EM>pipename</em> can contain any character other than a backslash.
+</p>
+
+<P>
+The <CODE>FastCgiIpcDir</code> directive must precede any <A HREF=
+"#FastCgiServer"><CODE>FastCgiServer</code></a> or <A HREF=
+"#FastCgiExternalServer"><CODE>FastCgiExternalServer</code></a> directives (which make use of Unix
+sockets). The directory must be readable, writeable, and executable (searchable) by the web server, but
+otherwise should not be accessible to anyone.
+</p>
+<P>
+<CODE>FastCgiIpcDir</code> is typically used move the directory someplace more suitable (than the default)
+for the platform or to prevent multiple Apache instances from sharing FastCGI application instances.
+</p>
+
+<HR />
+<H2>
+<A NAME="FastCgiWrapper">FastCgiWrapper</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+<TD>
+
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiWrapper <EM>On | Off | filename</em></code> 
+</td>
+</tr>
+<TR>
+<TD>
+
+<A HREF=
+"http://httpd.apache.org/docs/mod/directive-dict.html#Default"><STRONG>Default:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiWrapper Off</code> 
+</td>
+</tr>
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+
+<TD>
+server config
+</td>
+</tr>
+</table>
+<P>
+<STRONG>Unix (only):</strong> The <CODE>FastCgiWrapper</code> directive is used to enable support for a
+wrapper such as <A HREF="http://httpd.apache.org/docs/suexec.html">suexec</a> (included with Apache in the
+support directory) or <A HREF="http://cgiwrap.sourceforge.net/">cgiwrap</a>. To use the same wrapper used
+by Apache, set <CODE>FastCgiWrapper</code> to <EM>On</em> (NOTE - mod_fastcgi cannot reliably determine the
+wrapper used by Apache when built as a DSO). The <EM>On</em> argument requires suexec be enabled in Apache
+(for CGI). To use a specific wrapper, specify a <EM>filename</em>. If the filename does not begin with a
+slash (/) then it is assumed to be relative to the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#serverroot">ServerRoot</a>. The wrapper is used to invoke all
+FastCGI applications (in the future this directive will have directory context).
+</p>
+
+<P>
+When <CODE>FastCgiWrapper</code> is enabled, no assumptions are made about the target application and thus
+presence and permissions checks cannot be made. This is the responsibility of the wrapper.
+</p>
+<P>
+The wrapper is invoked with the following arguments: username, group, application. The username and group
+are determined as described below. The application is the &quot;filename&quot; Apache resolves the
+requested URI to (dynamic) or the filename provided as an argument to another FastCGI (server or
+authorizer) directive. These arguments may or may not be used by the wrapper (e.g. suexec uses them,
+cgiwrap parses the URI and ignores them). The environment passed to the wrapper is identical to the
+environment passed when a wrapper is not in use.
+</p>
+<P>
+
+When <CODE>FastCgiWrapper</code> is enabled, the location of static or external FastCGI application
+directives can be important. Under Apache 1.3, they inherit their user and group from the <CODE>user and
+group</code> of the virtual server in which they are defined. <CODE><A HREF=
+"http://httpd.apache.org/docs/mod/core.html#user">User</a></code> and <CODE><A HREF=
+"http://httpd.apache.org/docs/mod/core.html#group">Group</a></code> directives <I><U>must</u></i> precede
+FastCGI application definitions. Under Apache 2.0, the <CODE>-user</code> and <CODE>-group</code> options
+to <A HREF="#FastCgiServer">FastCgiServer</a> and <A HREF=
+"#FastCgiExternalServer">FastCgiExternalServer</a> directives must be used (dynamic applications still use
+the virtual server&#39;s user and group).
+</p>
+
+<P>
+Note that access to (use of) FastCGI applications is <U><I>not</i></u> limited to the virtual server in
+which they were defined. The application is used to service requests from any virtual server with the same
+user and group.
+</p>
+<P>
+If a request is received for a FastCGI application without an existing matching definition already running
+with the correct user and group, a dynamic instance of the application is started with the correct user and
+group. This can lead to multiple copies of the same application running with different user/group. If this
+is a problem, preclude navigation to the application from other virtual servers or configure the virtual
+servers with the same User and Group.
+</p>
+<P>
+See the Apache documentation for more information about suexec (make sure you fully understand the security
+implications).
+</p>
+
+<HR />
+<H2>
+<A NAME="FastCgiAuthenticator">FastCgiAuthenticator</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+<TD>
+
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAuthenticator <EM>filename</em> [-compat]</code> 
+</td>
+</tr>
+<TR>
+
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+<TD>
+directory
+</td>
+</tr>
+</table>
+<P>
+
+The <CODE>FastCgiAuthenticator</code> directive is used to define a FastCGI application as a per-directory
+authenticator. Authenticators verify the requestor is who he says he is by matching the provided username
+and password against a list or database of known users and passwords. FastCGI based authenticators are
+useful primarily when the user database is maintained within an existing independent program or resides on
+a machine other than the web server.
+</p>
+<P>
+If the FastCGI application <EM>filename</em> does not have a corresponding static or external server
+definition, it is started as a dynamic FastCGI application. If the filename does not begin with a slash (/)
+then it is assumed to be relative to the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#serverroot">ServerRoot</a>.
+</p>
+<P>
+
+<CODE>FastCgiAuthenticator</code> is used within <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#directory"><CODE>Directory</code></a> or <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#location"><CODE>Location</code></a> containers and must include
+an <A HREF="http://httpd.apache.org/docs/mod/core.html#authtype"><CODE>AuthType</code></a> and <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#authname"><CODE>AuthName</code></a> directive. Only the
+<CODE>Basic</code> user authentication type is supported. It must be accompanied by a <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#require"><CODE>require</code></a> or <CODE><A HREF=
+"#FastCgiAuthorizer">FastCgiAuthorizer</a></code> directive in order to work correctly.
+</p>
+
+<BLOCKQUOTE>
+<PRE>
+&lt;Directory htdocs/protected&gt;
+AuthType Basic
+AuthName ProtectedRealm
+FastCgiAuthenticator fcgi-bin/authenticator
+require valid-user
+&lt;/Directory&gt;
+</pre>
+</blockquote>
+<P>
+<CODE>mod_fastcgi</code> sends nearly all of the standard environment variables typically available to
+CGI/FastCGI request handlers. All headers returned by a FastCGI authentication application in a successful
+response (Status: 200) are passed to sub-processes (CGI/FastCGI invocations) as environment variables. All
+headers returned in an unsuccessful response are passed on to the client. FastCGI specification compliant
+behavior can be obtained by using the <CODE>-compat</code> option.
+</p>
+
+<P>
+<CODE>mod_fastcgi</code> sets the environment variable &quot;FCGI_APACHE_ROLE&quot; to
+&quot;AUTHENTICATOR&quot; to indicate which (Apache specific) authorizer phase is being performed.
+</p>
+<P>
+Custom failure responses from FastCGI authorizer applications are not (yet?) supported. See the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#errordocument">ErrorDocument</a> directive for a workaround (a
+FastCGI application can serve the document).
+</p>
+
+<HR />
+<H2>
+<A NAME="FastCgiAuthenticatorAuthoritative">FastCgiAuthenticatorAuthoritative</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+<TD>
+
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAuthenticatorAuthoritative <EM>On | Off</em></code> 
+</td>
+</tr>
+<TR>
+<TD>
+
+<A HREF=
+"http://httpd.apache.org/docs/mod/directive-dict.html#Default"><STRONG>Default:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAuthenticatorAuthoritative On</code> 
+</td>
+</tr>
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+
+<TD>
+directory
+</td>
+</tr>
+</table>
+<P>
+Setting the <CODE>FastCgiAuthenticatorAuthoritative</code> directive explicitly to <EM>Off</em> allows
+authentication to be passed on to lower level modules (as defined in the <CODE>Configuration</code> and
+<CODE>modules.c</code> files) if the FastCGI application fails to authenticate the user.
+</p>
+
+<P>
+A common use for this is in conjunction with a well protected <A HREF=
+"http://httpd.apache.org/docs/mod/mod_auth.html#authuserfile"><CODE>AuthUserFile</code></a> containing a
+few (administration related) users.
+</p>
+<P>
+By default, control is not passed on and an unknown user will result in an Authorization Required reply.
+Disabling the default should be carefully considered.
+</p>
+<HR />
+<H2>
+
+<A NAME="FastCgiAuthorizer">FastCgiAuthorizer</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+
+<TD>
+<CODE>FastCgiAuthorizer <EM>filename</em> [-compat]</code> 
+</td>
+</tr>
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+
+<TD>
+directory
+</td>
+</tr>
+</table>
+<P>
+The <CODE>FastCgiAuthorizer</code> directive is used to define a FastCGI application as a per-directory
+authorizer. Authorizers validate whether an authenticated requestor is allowed access to the requested
+resource. FastCGI based authorizers are useful primarily when there is a dynamic component to the
+authorization decision such as a time of day or whether or not the user has paid his bills.
+</p>
+
+<P>
+If the FastCGI application <EM>filename</em> does not have a corresponding static or external server
+definition, it is started as a dynamic FastCGI application. If the filename does not begin with a slash (/)
+then it is assumed to be relative to the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#serverroot">ServerRoot</a>.
+</p>
+<P>
+<CODE>FastCgiAuthorizer</code> is used within <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#directory"><CODE>Directory</code></a> or <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#location"><CODE>Location</code></a> containers and must include
+an <A HREF="http://httpd.apache.org/docs/mod/core.html#authtype"><CODE>AuthType</code></a> and <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#authname"><CODE>AuthName</code></a> directive. It must be
+accompanied by an authentication directive such as <A HREF=
+"#FastCgiAuthenticator"><CODE>FastCgiAuthenticator</code></a>, <A HREF=
+"http://httpd.apache.org/docs/mod/mod_auth.html#authuserfile"><CODE>AuthUserFile</code></a>, <A HREF=
+"http://httpd.apache.org/docs/mod/mod_auth_db.html#authdbuserfile"><CODE>AuthDBUserFile</code></a> or <A
+HREF="http://httpd.apache.org/docs/mod/mod_auth_dbm.html#authdbmuserfile"><CODE>AuthDBMUserFile</code>
+
+in order to work correctly.
+</a
+href="http://httpd.apache.org/docs/mod/mod_auth_dbm.html#authdbmuserfile"></p>
+<BLOCKQUOTE>
+<PRE>
+&lt;Directory htdocs/protected&gt;
+AuthType Basic
+AuthName ProtectedRealm
+AuthDBMUserFile conf/authentication-database
+FastCgiAuthorizer fcgi-bin/authorizer
+&lt;/Directory&gt;
+</pre>
+</blockquote>
+<P>
+
+<CODE>mod_fastcgi</code> sends nearly all of the standard environment variables typically available to
+CGI/FastCGI request handlers. All headers returned by a FastCGI authorizer application in a successful
+response (Status: 200) are passed to sub-processes (CGI/FastCGI invocations) as environment variables. All
+headers returned in an unsuccessful response are passed on to the client. FastCGI specification compliant
+behavior can be obtained by using the <CODE>-compat</code> option.
+</p>
+<P>
+<CODE>mod_fastcgi</code> sets the environment variable &quot;FCGI_APACHE_ROLE&quot; to
+&quot;AUTHORIZER&quot; to indicate which (Apache specific) authorizer phase is being performed.
+</p>
+
+<P>
+Custom failure responses from FastCGI authorizer applications are not (yet?) supported. See the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#errordocument">ErrorDocument</a> directive for a workaround (a
+FastCGI application can serve the document).
+</p>
+<HR />
+<H2>
+<A NAME="FastCgiAuthorizerAuthoritative">FastCgiAuthorizerAuthoritative</a>
+</h2>
+
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAuthorizerAuthoritative <EM>On | Off</em></code> 
+</td>
+
+</tr>
+<TR>
+<TD>
+<A HREF=
+"http://httpd.apache.org/docs/mod/directive-dict.html#Default"><STRONG>Default:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAuthorizerAuthoritative On</code> 
+</td>
+</tr>
+
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+<TD>
+directory
+</td>
+</tr>
+</table>
+
+<P>
+Setting the <CODE>FastCgiAuthorizerAuthoritative</code> directive explicitly to <EM>Off</em> allows
+authorization to be passed on to lower level modules (as defined in the <CODE>Configuration</code> and
+<CODE>modules.c</code> files) if the FastCGI application fails to authorize the user.
+</p>
+
+<P>
+By default, control is not passed on and an unauthorized user will result in an Authorization Required
+reply. Disabling the default should be carefully considered.
+</p>
+<HR />
+<H2>
+<A NAME="FastCgiAccessChecker">FastCgiAccessChecker</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAccessChecker <EM>filename</em> [-compat]</code> 
+</td>
+
+</tr>
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+<TD>
+directory
+</td>
+</tr>
+
+</table>
+<P>
+The <CODE>FastCgiAccessChecker</code> (suggestions for a better name are welcome) directive is used to
+define a FastCGI application as a per-directory access validator. The Apache Access phase precede user
+authentication and thus the decision to (dis)allow access to the requested resource is based on the HTTP
+headers submitted with the request. FastCGI based authorizers are useful primarily when there is a dynamic
+component to the access validation decision such as a time of day or whether or not a domain has paid his
+bills.
+</p>
+<P>
+If the FastCGI application <EM>filename</em> does not have a corresponding static or external server
+definition, it is started as a dynamic FastCGI application. If the filename does not begin with a slash (/)
+then it is assumed to be relative to the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#serverroot">ServerRoot</a>.
+</p>
+
+<P>
+<CODE>FastCgiAccessChecker</code> is used within <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#directory"><CODE>Directory</code></a> or <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#location"><CODE>Location</code></a> containers.
+</p>
+<BLOCKQUOTE>
+<PRE>
+&lt;Directory htdocs/protected&gt;
+
+FastCgiAccessChecker fcgi-bin/access-checker
+&lt;/Directory&gt;
+</pre>
+</blockquote>
+<P>
+<CODE>mod_fastcgi</code> sends nearly all of the standard environment variables typically available to
+CGI/FastCGI request handlers. All headers returned by a FastCGI access-checker application in a successful
+response (Status: 200) are passed to sub-processes (CGI/FastCGI invocations) as environment variables. All
+headers returned in an unsuccessful response are passed on to the client. FastCGI specification compliant
+behavior can be obtained by using the <CODE>-compat</code> option.
+</p>
+
+<P>
+<CODE>mod_fastcgi</code> sets the environment variable &quot;FCGI_APACHE_ROLE&quot; to
+&quot;ACCESS_CHECKER&quot; to indicate which (Apache specific) authorizer phase is being performed.
+</p>
+<P>
+Custom failure responses from FastCGI authorizer applications are not (yet?) supported. See the <A HREF=
+"http://httpd.apache.org/docs/mod/core.html#errordocument">ErrorDocument</a> directive for a workaround (a
+FastCGI application can serve the document).
+</p>
+
+<HR />
+<H2>
+<A NAME="FastCgiAccessCheckerAuthoritative">FastCgiAccessCheckerAuthoritative</a>
+</h2>
+
+<TABLE BORDER="0" SUMMARY="">
+<TR>
+<TD>
+
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Syntax" REL=
+"Help"><STRONG>Syntax:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAccessCheckerAuthoritative <EM>On | Off</em></code> 
+</td>
+</tr>
+<TR>
+<TD>
+
+<A HREF=
+"http://httpd.apache.org/docs/mod/directive-dict.html#Default"><STRONG>Default:</strong></a> 
+</td>
+<TD>
+<CODE>FastCgiAccessCheckerAuthoritative On</code> 
+</td>
+</tr>
+<TR>
+<TD>
+<A HREF="http://httpd.apache.org/docs/mod/directive-dict.html#Context" REL=
+"Help"><STRONG>Context:</strong></a> 
+</td>
+
+<TD>
+directory
+</td>
+</tr>
+</table>
+<P>
+Setting the <CODE>FastCgiAccessCheckerAuthoritative</code> directive explicitly to <EM>Off</em> allows
+access checking to be passed on to lower level modules (as defined in the <CODE>Configuration</code> and
+<CODE>modules.c</code> files) if the FastCGI application fails to allow access.
+</p>
+
+<P>
+By default, control is not passed on and a failed access check will result in a Forbidden reply. Disabling
+the default should be carefully considered.
+</p>
+  </div>
+
+  <div class="clear-block clear">
+    <div class="meta">
+    
+    </div>
+
+      </div>
+
+</div>	</div> <!-- end content -->
+	<div id="footer">
+		&copy; Copyright 1996 - 2008 Open Market, Rob Saccoccio &amp; others, All rights reserved. <a href="http://www.cosmicsitedesign.com/">Web design</a> by CosmicSiteDesign.com
+	</div> <!-- end footer -->
+</div> <!-- end wrapper -->
+
+</body>
+</html>
+
