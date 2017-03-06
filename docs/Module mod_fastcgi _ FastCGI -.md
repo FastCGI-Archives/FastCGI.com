@@ -287,7 +287,7 @@ For historic reasons the mis-spelling `singleThreshhold` is also accepted.</dd>
 | | |
 |  --- | --- |
 |[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiExternalServer _filename_ -host _hostname:port [option ...]_`|
-|`FastCgiExternalServer _filename_ -socket _filename [option ...]_`|
+| |`FastCgiExternalServer _filename_ -socket _filename [option ...]_`|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|server config, virtual host|
 
 The `FastCgiExternalServer` directive defines _filename_ as an external FastCGI application. If _filename_ does not begin with a slash (/) then it is assumed to be relative to the [ServerRoot](http://httpd.apache.org/docs/mod/core.html#serverroot). The _filename_ does not have to exist in the local filesystem. URIs that Apache resolves to this _filename_ will be handled by this external FastCGI application.
