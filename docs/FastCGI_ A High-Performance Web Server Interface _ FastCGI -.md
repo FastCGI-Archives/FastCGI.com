@@ -96,7 +96,7 @@ FastCGI's ability to run applications remotely (over a TCP connection) provides 
 
 Applications that run on organizational (external) Web servers and depend on internal databases can be a challenge to administer. Figure 1 shows a typical organization, with an external Web server, a firewall restricting access to the internal network, and internal databases and applications.
 
-![error-file:TidyOut.log](https://raw.githubusercontent.com/FastCGI-Archives/FastCGI.com/master/docs/img00001.gif)<a name="_Ref352505891">Figure 1</a>
+![error-file:TidyOut.log](img00001.gif)<a name="_Ref352505891">Figure 1</a>
 
 With CGI and vendor APIs, the application has to run on the Web server machine. This means the server administrator has to replicate the necessary database information onto the system hosting the Web server (which may be difficult to do in an automated way without compromising firewall security). Or, the administrator may build a "bridge" that allows access through the Web server to internal databases and applications (which is effectively re-inventing remote FastCGI).
 
@@ -118,7 +118,7 @@ This section offers a brief introduction to the protocol used on the connection 
 
 FastCGI uses a simple packet record format on the connection between the application and the Web server. The same record format is used in both directions and is outlined in Figure 2.
 
-![error-file:TidyOut.log](https://raw.githubusercontent.com/FastCGI-Archives/FastCGI.com/master/docs/img00002.gif)<a name="_Ref352404075">Figure 2</a>
+![error-file:TidyOut.log](img00002.gif)<a name="_Ref352404075">Figure 2</a>
 
 The protocol version field specifies the version of the FastCGI protocol that is in use. The type field specifies the type of the record (described in the following section). The request ID identifies this record to a particular request, allowing multiple requests to be multiplexed over a single connection. The data length field specifies the number of data bytes that follow.
 
@@ -161,7 +161,7 @@ Let's assume that the Web server is configured so that all files with the .<tt>s
 
 After the Web server makes an access control decision and maps this URL to a content file, it invokes the FastCGI filter application with this file available as input. The FastCGI program's HTML output is sent back to the client, just as in the responder role. The process is outlined in Figure 3.
 
-![error-file:TidyOut.log](https://raw.githubusercontent.com/FastCGI-Archives/FastCGI.com/master/docs/img00003.gif)<a name="_Ref352560526">Figure 3</a>
+![error-file:TidyOut.log](img00003.gif)<a name="_Ref352560526">Figure 3</a>
 
 Filter applications can significantly improve performance by caching filter results (the server provides the modification time in the request information so that applications can flush the cache when the server file has been modified).
 
@@ -310,6 +310,6 @@ Today's Web business applications need a platform that's fast, open, maintainabl
 
 For more information about Open Market and our products, visit our Web site at:[http://www.openmarket.com/](https://web.archive.org/web/20160305160340/http://www.openmarket.com/)
 
-For more information about the FastCGI protocol and the developer's kit, and the latest information about FastCGI standardization and support in other Web servers, visit the FastCGI project page at: [http://www.fastcgi.com](https://web.archive.org/web/20160305160340/http://www.fastcgi.com/)
+For more information about the FastCGI protocol and the developer's kit, and the latest information about FastCGI standardization and support in other Web servers, visit the FastCGI project page at: [fastcgi-archives.github.io](https://fastcgi-archives.github.io/)
 
 This file is Copyright © 1996 Open Market, Inc.
