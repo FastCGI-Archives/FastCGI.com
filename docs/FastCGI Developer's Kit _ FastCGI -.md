@@ -45,13 +45,13 @@ The kit includes a [technical white paper](https://htmlpreview.github.io/?https:
 
 The [FastCGI Specification](https://htmlpreview.github.io/?https://github.com/FastCGI-Archives/fcgi2/blob/master/doc/fcgi-spec.html), <tt>doc/fcgi-spec.html</tt>, defines the interface between a FastCGI application and a Web server that supports FastCGI. The software in the kit implements the specification. You don't need to read the specification in order to write applications.
 
-Additional information is provided in the [FAQ](https://htmlpreview.github.io/?https://github.com/FastCGI-Archives/FastCGI.com/blob/master/FastCGI%20FAQ.html) document, which contains frequently asked questions about application development using FastCGI, as well as some general information.
+Additional information is provided in the [FAQ](FastCGI%20FAQ.md) document, which contains frequently asked questions about application development using FastCGI, as well as some general information.
 
 Experience with CGI programming will be extremely valuable in writing FastCGI applications. If you don't have enough experience with CGI programming, you should read one of the popular books on the topic or study the [CGI Spécification at W3 page](https://www.w3.org/CGI/).
 
 ### <a name="S2">2\. Getting started</a>
 
-The kit is a compressed tar (tar.Z) file, distributed via the [fastcgi.com](http://fastcgi.com/) Web page. Unpacking the tar file creates a new directory <tt>fcgi-devel-kit</tt>.
+The kit is a compressed tar (tar.Z) file, distributed via the [fastcgi-archives.github.io](https://fastcgi-archives.github.io/) Web page. Unpacking the tar file creates a new directory <tt>fcgi-devel-kit</tt>.
 
 Open the kit's index page, <tt>fcgi-devel-kit/index.html</tt>, using the "Open File" command in your Web browser. The index page gives you an overview of the kit structure and helps you navigate the kit. The index page also contains links that run some example applications, but the applications won't work when index.html is opened using the "Open File" command because they aren't aren't being accessed through a Web server.
 
@@ -231,7 +231,7 @@ A major advantage of the FastCGI approach to high-performance Web applications i
 
 We have produced FastCGI-integrated Perl and Tcl interpreters. Doing so was easy, since Perl and Tcl are conventional C applications and <tt>fcgi_stdio</tt> was designed for converting conventional C applications. Essentially no source code changes were required in these programs; a small amount of code was added in order to make <tt>FCGI_Accept</tt> and other FastCGI primitives available in these languages. And because these interpreters were developed using <tt>fcgi_stdio</tt>, they run standard Perl and Tcl applications (e.g. CGI scripts) as well as FastCGI applications.
 
-See the [fastcgi.com](http://fastcgi.com/) Web page for more information about the Perl and Tcl libraries.
+See the [fastcgi-archives.github.io](https://fastcgi-archives.github.io/) Web page for more information about the Perl and Tcl libraries.
 
 Here are the Perl and Tcl versions of <tt>tiny-fcgi</tt>:
 
@@ -297,7 +297,7 @@ class TinyFCGI {
 
 ### <a name="S4.1">4.1 Using a Web server that supports FastCGI</a>
 
-For a current listing of Web servers that support FastCGI, see the [fastcgi.com](http://fastcgi.com/) Web page.
+For a current listing of Web servers that support FastCGI, see the [fastcgi-archives.github.io](https://fastcgi-archives.github.io/) Web page.
 
 Some of the Web servers that support FastCGI perform management of FastCGI applications. You don't need to start and stop FastCGI applications; the Web server takes care of this. If an application process should crash, the Web server restarts it.
 
@@ -341,7 +341,7 @@ On AIX there's a problem with shared listening sockets. The symptoms can include
 
 The mailing list <tt>fastcgi-developers</tt> is used for discussions of issues in developing FastCGI applications. Topics include announcement of FastCGI-capable Web servers or changes to such servers, announcement of new application libraries or changes to such libraries, announcement of known bugs, discussion of design trade-offs in FastCGI application programming, and discussion of development plans and experiences. To join the list, see [http://fastcgi.com/fastcgi-developers](http://fastcgi.com/fastcgi-developers).
 
-A link to a mail archive can be found on the FastCGI home page, [http://www.fastcgi.com](http://www.fastcgi.com/)
+A link to a mail archive can be found on the FastCGI home page, [fastcgi-archives.github.io](https://fastcgi-archives.github.io/)
 
 * * *
 
