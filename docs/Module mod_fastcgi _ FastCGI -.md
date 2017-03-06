@@ -1,13 +1,3 @@
-<div id="wrapper">
-
-<div id="heading">Module mod_fastcgi</div>
-
-<div id="content">
-
-<div id="node-25" class="node">
-
-<div class="content">
-
 ![[APACHE FEATHER BANNER]](http://httpd.apache.org/docs/images/sub.gif)
 
 # Module mod_fastcgi
@@ -797,12 +787,5 @@ Setting the `FastCgiAccessCheckerAuthoritative` directive explicitly to _Off_ al
 
 By default, control is not passed on and a failed access check will result in a Forbidden reply. Disabling the default should be carefully considered.
 
-</div>
+**© Copyright 1996 - 2008 Open Market, Rob Saccoccio & others, All rights reserved. [Web design](http://www.cosmicsitedesign.com/) by CosmicSiteDesign.com**
 
-</div>
-
-</div>
-
-<div id="footer">© Copyright 1996 - 2008 Open Market, Rob Saccoccio & others, All rights reserved. [Web design](http://www.cosmicsitedesign.com/) by CosmicSiteDesign.com</div>
-
-</div>
