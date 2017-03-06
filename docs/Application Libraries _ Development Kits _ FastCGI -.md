@@ -7,10 +7,10 @@
     *   [FCGI wrapper for Microsoft ™ IIS](http://search.cpan.org/~cosmicnet/) by Lyle Hopkins.
     *   [FCGI](http://search.cpan.org/~skimo/) by Sven Verdoolaege.
     *   [CGI::Fast](http://search.cpan.org/dist/CGI.pm/CGI/Fast.pm) by Lincoln D. Stein.
-    *   [Perl Usage Instructions](https://htmlpreview.github.io/?https://github.com/FastCGI-Archives/FastCGI.com/blob/master/Perl%20_%20FastCGI%20-.html)
+    *   [Perl Usage Instructions](Perl _ FastCGI -.md)
     *   [Catalyst](http://catalyst.perl.org/) MVC For Perl
 *   [PHP](http://www.php.net/)
-    *   [PHP Usage Instructions](https://htmlpreview.github.io/?https://github.com/FastCGI-Archives/FastCGI.com/blob/master/PHP%20_%20FastCGI%20-.html)
+    *   [PHP Usage Instructions](PHP _ FastCGI -.md)
     *   [Fastcgi Process manager](http://php-fpm.org/) (requires php 5.3.3)
 *   [Fastcgi for Ruby](https://rubyforge.org/projects/fcgi/)
 *   [Python](http://www.python.org/)
