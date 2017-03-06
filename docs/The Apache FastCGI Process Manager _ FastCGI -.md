@@ -41,4 +41,4 @@
 
         The future enhancements to the process manager includes complete separation of process manager functionality from the web server core and providing web-server independent mechanism of informing the process manager of the important events, such as start/termination of the web server,  configuration file parsing, etc.  This would also aid in porting the process manager functionality to other operating systems.  Finally, an overall redesign may be needed to optimize the management of the FastCGI applications, possibly using OS-dependent facilities.
 
-$Stanley Gambarin <[stanleyg@cs.bu.edu](mailto://stanleyg@cs.bu.edu)> 1997/09/27 12:23:23 PM PST$
+Stanley Gambarin <[stanleyg@cs.bu.edu](mailto://stanleyg@cs.bu.edu)> 1997/09/27 12:23:23 PM PST
