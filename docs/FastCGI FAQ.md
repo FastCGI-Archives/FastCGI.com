@@ -153,7 +153,7 @@ Yes! As a matter of fact, you can set up multiple versions of PHP, and also util
 
 ##### Build PHP
 
-First of all, build PHP. All of version 4 supports the FastCGI flag. Simply specify where to get the FastCGI libraries from (download and install them from the http://www.fastcgi.com website), and do the normal build with whatever other options you require:
+First of all, build PHP. All of version 4 supports the FastCGI flag. Simply specify where to get the FastCGI libraries from (download and install them from the https://fastcgi-archives.github.io/ website), and do the normal build with whatever other options you require:
 
 ```
 # ./configure --with-fastcgi=/usr/local
@@ -223,7 +223,7 @@ There are two ways for getting external apps working:
 FastCGIExternalServer /var/www/htdocs/extprog -host 127.0.0.1:9000
 ```
 
-    This seems easiest but has some shortcomings. Firstly there is the combination of real and virtual filesystem locations in the same place. If you are trying to keep all your files well organized and you have source files for the external server in one place and map URIs to the filesystem into another, there is a less than clear demarcation between what is real and what is virtual. Most importantly, if you want to use the same external server for more than one server, site, or URI, giving it a virtual place within a real path makes all that more confusing.
+This seems easiest but has some shortcomings. Firstly there is the combination of real and virtual filesystem locations in the same place. If you are trying to keep all your files well organized and you have source files for the external server in one place and map URIs to the filesystem into another, there is a less than clear demarcation between what is real and what is virtual. Most importantly, if you want to use the same external server for more than one server, site, or URI, giving it a virtual place within a real path makes all that more confusing.
 
 2.  Use a segregated path and use Alias to map requests to it.
 
@@ -236,7 +236,7 @@ FastCGIExternalServer /fastcgiext/extprog -host 127.0.0.1:9000
 Alias /extprog /fastcgiext/extprog
 ```
 
-    This has the potential for more clarity. As a convention all external servers could be mapped into a virtual hierarchy and then aliases used to map into that from any and all places. This keeps the servers well organized and out of the way from filesystem locations and Aliases can map into them from where they are needed.
+This has the potential for more clarity. As a convention all external servers could be mapped into a virtual hierarchy and then aliases used to map into that from any and all places. This keeps the servers well organized and out of the way from filesystem locations and Aliases can map into them from where they are needed.
 
 ##### [Back to Top](#top)
 
