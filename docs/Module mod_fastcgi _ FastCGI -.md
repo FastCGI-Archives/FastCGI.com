@@ -439,7 +439,7 @@ By default, control is not passed on and an unknown user will result in an Autho
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiAuthorizer _filename_ [-compat]`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiAuthorizer _filename_ [-compat]|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|directory|
 
 The `FastCgiAuthorizer` directive is used to define a FastCGI application as a per-directory authorizer. Authorizers validate whether an authenticated requestor is allowed access to the requested resource. FastCGI based authorizers are useful primarily when there is a dynamic component to the authorization decision such as a time of day or whether or not the user has paid his bills.
