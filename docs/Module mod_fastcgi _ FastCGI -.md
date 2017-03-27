@@ -70,17 +70,17 @@ Custom failure responses from FastCGI authorizer applications are not supported 
 
 ## <a name="directives">Directives</a>
 
-*   [`FastCgiServer`](#FastCgiServer)
-*   [`FastCgiConfig`](#FastCgiConfig)
-*   [`FastCgiExternalServer`](#FastCgiExternalServer)
-*   [`FastCgiIpcDir`](#FastCgiIpcDir)
-*   [`FastCgiWrapper`](#FastCgiWrapper)
-*   [`FastCgiAuthenticator`](#FastCgiAuthenticator)
-*   [`FastCgiAuthenticatorAuthoritative`](#FastCgiAuthenticatorAuthoritative)
-*   [`FastCgiAuthorizer`](#FastCgiAuthorizer)
-*   [`FastCgiAuthorizerAuthoritative`](#FastCgiAuthorizerAuthoritative)
-*   [`FastCgiAccessChecker`](#FastCgiAccessChecker)
-*   [`FastCgiAccessCheckerAuthoritative`](#FastCgiAccessCheckerAuthoritative)
+*   [FastCgiServer](#FastCgiServer)
+*   [FastCgiConfig](#FastCgiConfig)
+*   [FastCgiExternalServer](#FastCgiExternalServer)
+*   [FastCgiIpcDir](#FastCgiIpcDir)
+*   [FastCgiWrapper](#FastCgiWrapper)
+*   [FastCgiAuthenticator](#FastCgiAuthenticator)
+*   [FastCgiAuthenticatorAuthoritative](#FastCgiAuthenticatorAuthoritative)
+*   [FastCgiAuthorizer](#FastCgiAuthorizer)
+*   [FastCgiAuthorizerAuthoritative](#FastCgiAuthorizerAuthoritative)
+*   [FastCgiAccessChecker](#FastCgiAccessChecker)
+*   [FastCgiAccessCheckerAuthoritative](#FastCgiAccessCheckerAuthoritative)
 
 * * *
 
@@ -88,7 +88,7 @@ Custom failure responses from FastCGI authorizer applications are not supported 
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiServer _filename_ _[option ...]_`|
+|**[Syntax:](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)**|FastCgiServer _filename_ _[option ...]_|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|server config, virtual host|
 
 The `FastCgiServer` directive defines _filename_ as a static FastCGI application. If the filename does not begin with a slash (/) then it is assumed to be relative to the [ServerRoot](http://httpd.apache.org/docs/mod/core.html#serverroot).
@@ -176,7 +176,7 @@ _Option_ can be one of (case insensitive):
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiConfig _option [option ...]_`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiConfig _option [option ...]_|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|server config|
 
 The `FastCgiConfig` directive defines the default parameters for _all_ dynamic FastCGI applications. This directive does not affect static or external applications in any way.
@@ -286,8 +286,8 @@ For historic reasons the mis-spelling `singleThreshhold` is also accepted.</dd>
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiExternalServer _filename_ -host _hostname:port [option ...]_`|
-| |`FastCgiExternalServer _filename_ -socket _filename [option ...]_`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiExternalServer _filename_ -host _hostname:port [option ...]_|
+| |FastCgiExternalServer _filename_ -socket _filename [option ...]_|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|server config, virtual host|
 
 The `FastCgiExternalServer` directive defines _filename_ as an external FastCGI application. If _filename_ does not begin with a slash (/) then it is assumed to be relative to the [ServerRoot](http://httpd.apache.org/docs/mod/core.html#serverroot). The _filename_ does not have to exist in the local filesystem. URIs that Apache resolves to this _filename_ will be handled by this external FastCGI application.
@@ -347,11 +347,11 @@ _Option_ can be one of (case insensitive):
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|**Unix: ** `FastCgiIpcDir _directory_`|
-| |**Windows NT: ** `FastCgiIpcDir _name_`|
-|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|**Unix/Apache: ** `FastCgiIpcDir logs/fastcgi`|
-| |**Unix/Apache2: ** `FastCgiIpcDir RUNTIMEDIR/fastcgi`|
-| |**Windows NT: ** `FastCgiIpcDir \\\\.\\pipe\\ModFastCgi\\`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|**Unix: ** FastCgiIpcDir _directory_|
+| |**Windows NT: ** FastCgiIpcDir _name_|
+|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|**Unix/Apache: ** FastCgiIpcDir logs/fastcgi|
+| |**Unix/Apache2: ** FastCgiIpcDir RUNTIMEDIR/fastcgi|
+| |**Windows NT: ** FastCgiIpcDir \\\\.\\pipe\\ModFastCgi\\|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|server config|
 
 **Unix: ** The `FastCgiIpcDir` directive specifies _directory_ as the place to store (and in the case of external FastCGI applications, find) the Unix socket files used for communication between the applications and the web server. If the directory does not begin with a slash (/) then it is assumed to be relative to the [ServerRoot](http://httpd.apache.org/docs/mod/core.html#serverroot). If the directory doesn't exist, an attempt is made to create it with appropriate permissions. Do not specify a directory that is not on a local filesystem! If you use the default directory (or another directory within `/tmp`), `mod_fastcgi` will break if your system periodically deletes files from `/tmp`.
@@ -368,8 +368,8 @@ The `FastCgiIpcDir` directive must precede any [`FastCgiServer`](#FastCgiServer)
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiWrapper _On | Off | filename_`|
-|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|`FastCgiWrapper Off`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiWrapper _On | Off | filename_|
+|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|FastCgiWrapper Off|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|server config|
 
 
@@ -393,7 +393,7 @@ See the Apache documentation for more information about suexec (make sure you fu
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiAuthenticator _filename_ [-compat]`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiAuthenticator _filename_ [-compat]|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|directory|
 
 The `FastCgiAuthenticator` directive is used to define a FastCGI application as a per-directory authenticator. Authenticators verify the requestor is who he says he is by matching the provided username and password against a list or database of known users and passwords. FastCGI based authenticators are useful primarily when the user database is maintained within an existing independent program or resides on a machine other than the web server.
@@ -423,8 +423,8 @@ Custom failure responses from FastCGI authorizer applications are not (yet?) sup
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiAuthenticatorAuthoritative _On | Off_`|
-|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|`FastCgiAuthenticatorAuthoritative On`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiAuthenticatorAuthoritative _On | Off_|
+|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|FastCgiAuthenticatorAuthoritative On|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|directory|
 
 Setting the `FastCgiAuthenticatorAuthoritative` directive explicitly to _Off_ allows authentication to be passed on to lower level modules (as defined in the `Configuration` and `modules.c` files) if the FastCGI application fails to authenticate the user.
@@ -469,8 +469,8 @@ Custom failure responses from FastCGI authorizer applications are not (yet?) sup
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiAuthorizerAuthoritative _On | Off_`|
-|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|`FastCgiAuthorizerAuthoritative On`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiAuthorizerAuthoritative _On | Off_|
+|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|FastCgiAuthorizerAuthoritative On|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|directory|
 
 Setting the `FastCgiAuthorizerAuthoritative` directive explicitly to _Off_ allows authorization to be passed on to lower level modules (as defined in the `Configuration` and `modules.c` files) if the FastCGI application fails to authorize the user.
@@ -483,7 +483,7 @@ By default, control is not passed on and an unauthorized user will result in an 
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiAccessChecker _filename_ [-compat]`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiAccessChecker _filename_ [-compat]|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|directory|
 
 The `FastCgiAccessChecker` (suggestions for a better name are welcome) directive is used to define a FastCGI application as a per-directory access validator. The Apache Access phase precede user authentication and thus the decision to (dis)allow access to the requested resource is based on the HTTP headers submitted with the request. FastCGI based authorizers are useful primarily when there is a dynamic component to the access validation decision such as a time of day or whether or not a domain has paid his bills.
@@ -510,8 +510,8 @@ Custom failure responses from FastCGI authorizer applications are not (yet?) sup
 
 | | |
 |  --- | --- |
-|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|`FastCgiAccessCheckerAuthoritative _On | Off_`|
-|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|`FastCgiAccessCheckerAuthoritative On`|
+|[**Syntax:**](http://httpd.apache.org/docs/mod/directive-dict.html#Syntax)|FastCgiAccessCheckerAuthoritative _On | Off_|
+|[**Default:**](http://httpd.apache.org/docs/mod/directive-dict.html#Default)|FastCgiAccessCheckerAuthoritative On|
 |[**Context:**](http://httpd.apache.org/docs/mod/directive-dict.html#Context)|directory|
 
 Setting the `FastCgiAccessCheckerAuthoritative` directive explicitly to _Off_ allows access checking to be passed on to lower level modules (as defined in the `Configuration` and `modules.c` files) if the FastCGI application fails to allow access.
